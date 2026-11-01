@@ -151,7 +151,7 @@ widget.openAddons();
 ## 📁 Estrutura do Repositório
 
 ```text
-handtalk-accessibility-widget/
+mahoraga-accessibility-widget/
 ├── research/                  # Registros da engenharia reversa via REA
 │   ├── REA_ANALYSIS.md        # Relatório de análise e engenharia reversa
 │   └── extract_*.js           # Scripts de extração e inspeção de chunks
