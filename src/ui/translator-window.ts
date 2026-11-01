@@ -57,7 +57,7 @@ export class TranslatorWindow {
       // Update avatar switch button badge
       const avatarBadge = this.element.querySelector<HTMLElement>('.ht-avatar-name-badge');
       if (avatarBadge) {
-        avatarBadge.innerText = state.avatar === 'HUGO' ? 'Hugo' : 'Maya';
+        avatarBadge.innerText = (state.avatar === 'THIAGO' || state.avatar === 'HUGO') ? 'Thiago' : 'Marya';
       }
 
       // Update collector button active state
@@ -142,9 +142,9 @@ export class TranslatorWindow {
             color: #0070f3;
             cursor: pointer;
             outline: none;
-          " title="Alternar entre Hugo e Maya">
+          " title="Alternar entre Thiago e Marya">
             <span style="width: 14px; height: 14px; display: inline-block;">${icons.libras}</span>
-            <span class="ht-avatar-name-badge">Hugo</span>
+            <span class="ht-avatar-name-badge">Thiago</span>
           </button>
 
           <!-- Window Controls -->
@@ -315,11 +315,11 @@ export class TranslatorWindow {
   private attachEvents() {
     if (!this.element) return;
 
-    // Avatar switch (Hugo <-> Maya)
+    // Avatar switch (Thiago <-> Marya)
     const avatarBtn = this.element.querySelector('.ht-btn-avatar-switch');
     avatarBtn?.addEventListener('click', () => {
       const current = store.getState().avatar;
-      const next: AvatarType = current === 'HUGO' ? 'MAYA' : 'HUGO';
+      const next: AvatarType = (current === 'THIAGO' || current === 'HUGO') ? 'MARYA' : 'THIAGO';
       store.setState({ avatar: next });
     });
 

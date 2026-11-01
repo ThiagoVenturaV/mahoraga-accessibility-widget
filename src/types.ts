@@ -1,4 +1,4 @@
-export type AvatarType = 'HUGO' | 'MAYA';
+export type AvatarType = 'THIAGO' | 'MARYA' | 'HUGO' | 'MAYA';
 
 export type WidgetSide = 'left' | 'right';
 export type WidgetAlign = 'top' | 'center' | 'bottom' | 'default';

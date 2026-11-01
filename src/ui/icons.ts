@@ -188,6 +188,18 @@ export const icons = {
       <path d="M3 3v5h5"/>
     </svg>
   `,
+  thiago: `
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <circle cx="12" cy="8" r="5"/>
+      <path d="M3 20c0-3.3 4-5 9-5s9 1.7 9 5v1H3v-1z"/>
+    </svg>
+  `,
+  marya: `
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <circle cx="12" cy="8" r="4.5"/>
+      <path d="M12 2C8 2 6 5 6 8c0 2 1 3.5 2 4.5V14c0 3 3.5 4 8 4s8-1 8-4v-1.5c1-1 2-2.5 2-4.5 0-3-2-6-6-6z"/>
+    </svg>
+  `,
   hugo: `
     <svg viewBox="0 0 24 24" fill="currentColor">
       <circle cx="12" cy="8" r="5"/>

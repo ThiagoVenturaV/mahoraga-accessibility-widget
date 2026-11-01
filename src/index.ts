@@ -1,5 +1,5 @@
 import './styles/widget.css';
-import { WidgetOptions } from './types';
+import { WidgetOptions, AvatarType } from './types';
 import { defaultConfig } from './config';
 import { store } from './state/store';
 import { StyleManager } from './core/styles';
@@ -118,7 +118,7 @@ export class HandTalkWidget {
     this.translatorWindow.translateText(text);
   }
 
-  public setAvatar(avatar: 'HUGO' | 'MAYA') {
+  public setAvatar(avatar: AvatarType) {
     store.setState({ avatar });
   }
 

@@ -2,7 +2,7 @@ import { WidgetOptions, AccessibilityState } from './types';
 
 export const defaultConfig: Required<WidgetOptions> = {
   token: 'handtalk-open-widget',
-  avatar: 'HUGO',
+  avatar: 'THIAGO',
   align: 'bottom',
   side: 'right',
   maxTextSize: 800,
@@ -56,7 +56,7 @@ export const defaultState: AccessibilityState = {
   isDictionaryOpen: false,
   isCollectorActive: false,
 
-  avatar: 'HUGO',
+  avatar: 'THIAGO',
   speed: 1,
   opacity: 100,
   currentText: 'Olá! Clique em qualquer texto da página ou selecione uma frase para traduzir em Libras.',
@@ -146,15 +146,25 @@ export const DICTIONARY_DATABASE: Record<string, { definition: string; category:
     category: 'Resposta',
     description: 'Indicador levantado balançando lateralmente acompanhado de expressão facial de negação.'
   },
+  'thiago': {
+    definition: 'Avatar virtual masculino inteligente e acessível do widget.',
+    category: 'Personagem',
+    description: 'Sinal amigável e expressivo de Thiago com topete característico e sinalização fluente.'
+  },
+  'marya': {
+    definition: 'Avatar virtual feminina inteligente e expressiva do widget.',
+    category: 'Personagem',
+    description: 'Sinal identificador de Marya com referência ao rabo de cavalo e sorriso comunicativo.'
+  },
   'hugo': {
-    definition: 'Avatar virtual masculino pioneiro da Hand Talk.',
+    definition: 'Avatar virtual masculino (alias de Thiago).',
     category: 'Personagem',
     description: 'Sinal de amigo inteligente com topete característico.'
   },
   'maya': {
-    definition: 'Avatar virtual feminina inteligente e expressiva da Hand Talk.',
+    definition: 'Avatar virtual feminina (alias de Marya).',
     category: 'Personagem',
-    description: 'Sinal identificador de Maya com referência ao rabo de cavalo e sorriso comunicativo.'
+    description: 'Sinal de amiga inteligente com sorriso comunicativo.'
   }
 };
 
@@ -167,8 +177,8 @@ export const I18N = {
     dictionaryTitle: 'Dicionário de Libras',
     collectorPrompt: 'Clique em qualquer texto do site para traduzir em Libras',
     collectorActivePrompt: 'Modo seleção ativo: passe o mouse e clique no texto desejado',
-    avatarHugo: 'Hugo',
-    avatarMaya: 'Maya',
+    avatarThiago: 'Thiago',
+    avatarMarya: 'Marya',
     speedLabel: 'Velocidade',
     repeatLabel: 'Repetir',
     dictionaryLabel: 'Dicionário',

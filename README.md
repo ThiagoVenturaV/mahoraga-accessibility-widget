@@ -8,7 +8,7 @@
 [![WCAG 2.1 AA](https://img.shields.io/badge/Accessibility-WCAG%202.1%20AA-success.svg)](https://www.w3.org/WAI/standards-guidelines/wcag/)
 [![REA Powered](https://img.shields.io/badge/Reverse%20Engineered%20With-REA-purple.svg)](https://github.com/morluto/rea)
 
-**Widget moderno de acessibilidade digital e tradutor de Língua Brasileira de Sinais (Libras) com avatares virtuais 3D (Hugo & Maya).**  
+**Widget moderno de acessibilidade digital e tradutor de Língua Brasileira de Sinais (Libras) com avatares virtuais 3D (Thiago & Marya).**  
 Comportamento e arquitetura totalmente extraídos e reconstruídos através de engenharia reversa no plugin da [Hand Talk](https://www.handtalk.me/br/) utilizando o framework **REA** (*Reverse Engineer Anything*).
 
 [Demonstração Interativa](#demonstração-interativa) · [Como o REA foi Utilizado](#como-o-rea-foi-utilizado) · [Recursos Implementados](#recursos-implementados) · [Como Usar](#como-usar) · [Atalhos de Teclado](#atalhos-de-teclado)
@@ -45,7 +45,7 @@ Os scripts de análise e extração desenvolvidos durante a engenharia reversa e
 ## ✨ Recursos Implementados
 
 ### 1. 🤖 Assistente IA & Tradutor de Libras
-- **Avatares 3D Interativos:** Renderização em tempo real de **Hugo** (avatar masculino) e **Maya** (avatar feminina) com alternância com um clique.
+- **Avatares 3D Interativos:** Renderização em tempo real de **Thiago** (avatar masculino) e **Marya** (avatar feminina) com alternância com um clique.
 - **Expressões Faciais e Gestos de Libras:** Animações naturais de respiração, piscadas, sorrisos e gestos sincronizados de datilologia e sinais em Libras.
 - **Seletor de Texto (*Collector Mode*):** Passe o mouse sobre qualquer elemento do site para destacá-lo com retângulo pontilhado e clique para enviar diretamente ao avatar.
 - **Tradução por Seleção:** Tradução instantânea de qualquer texto selecionado com o cursor na página.
@@ -103,7 +103,7 @@ Adicione o script e a folha de estilo compilados no final do `<body>` do seu sit
   window.onload = function() {
     window.ht = new HT({
       token: "meu-site-token",
-      avatar: "HUGO",       // "HUGO" ou "MAYA"
+      avatar: "THIAGO",     // "THIAGO" ou "MARYA"
       side: "right",         // "right" ou "left"
       align: "bottom",       // "bottom", "center", "top"
       highContrast: false,
@@ -124,7 +124,7 @@ import { HT } from 'handtalk-accessibility-widget';
 import 'handtalk-accessibility-widget/dist/handtalk-widget.css';
 
 const widget = new HT({
-  avatar: 'HUGO',
+  avatar: 'THIAGO',
   side: 'right',
   align: 'bottom'
 });
@@ -173,7 +173,7 @@ handtalk-accessibility-widget/
 │   │   ├── translator-window.ts # Janela do Tradutor de Libras
 │   │   ├── addons-panel.ts    # Painel categorizado de recursos assistivos
 │   │   ├── dictionary-modal.ts# Modal do Dicionário de Libras
-│   │   ├── avatar-renderer.ts # Motor Canvas 2D/3D dos avatares Hugo e Maya
+│   │   ├── avatar-renderer.ts # Motor Canvas 2D/3D dos avatares Thiago e Marya
 │   │   └── icons.ts           # Ícones SVG acessíveis
 │   └── styles/
 │       └── widget.css         # Estilos isolados com animações

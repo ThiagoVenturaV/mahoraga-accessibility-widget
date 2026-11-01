@@ -5,7 +5,11 @@ export class AvatarRenderer {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private animFrameId: number | null = null;
-  private avatar: AvatarType = 'HUGO';
+  private avatar: AvatarType = 'THIAGO';
+
+  private isMale(): boolean {
+    return this.avatar === 'THIAGO' || this.avatar === 'HUGO';
+  }
 
   // Animation state
   private time = 0;
@@ -172,7 +176,7 @@ export class AvatarRenderer {
 
     // Subtle 3D studio background lighting
     const bgGrad = this.ctx.createRadialGradient(cx, cy - 20, 30, cx, cy, width * 0.7);
-    bgGrad.addColorStop(0, this.avatar === 'HUGO' ? 'rgba(0, 132, 255, 0.08)' : 'rgba(156, 39, 176, 0.08)');
+    bgGrad.addColorStop(0, this.isMale() ? 'rgba(0, 132, 255, 0.08)' : 'rgba(156, 39, 176, 0.08)');
     bgGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
     this.ctx.fillStyle = bgGrad;
     this.ctx.fillRect(0, 0, width, height);
@@ -190,10 +194,10 @@ export class AvatarRenderer {
   }
 
   private drawBody() {
-    const isHugo = this.avatar === 'HUGO';
-    const shirtColor = isHugo ? '#0070f3' : '#7928ca';
-    const shirtHighlight = isHugo ? '#3291ff' : '#9e46f7';
-    const shirtShadow = isHugo ? '#004fc5' : '#57189a';
+    const isThiago = this.isMale();
+    const shirtColor = isThiago ? '#0070f3' : '#7928ca';
+    const shirtHighlight = isThiago ? '#3291ff' : '#9e46f7';
+    const shirtShadow = isThiago ? '#004fc5' : '#57189a';
 
     // Torso / Shirt
     this.ctx.beginPath();
@@ -215,7 +219,7 @@ export class AvatarRenderer {
     this.ctx.moveTo(-22, 40);
     this.ctx.quadraticCurveTo(0, 62, 22, 40);
     this.ctx.lineWidth = 4;
-    this.ctx.strokeStyle = isHugo ? '#ffffff' : '#f0d9ff';
+    this.ctx.strokeStyle = isThiago ? '#ffffff' : '#f0d9ff';
     this.ctx.stroke();
 
     // Logo on chest (Hand Talk sign hand emblem)
@@ -226,8 +230,8 @@ export class AvatarRenderer {
   }
 
   private drawNeck() {
-    const skinColor = this.avatar === 'HUGO' ? '#f8c291' : '#fbc5a8';
-    const skinShadow = this.avatar === 'HUGO' ? '#e59866' : '#e09f80';
+    const skinColor = this.isMale() ? '#f8c291' : '#fbc5a8';
+    const skinShadow = this.isMale() ? '#e59866' : '#e09f80';
 
     this.ctx.beginPath();
     this.ctx.rect(-16, 12, 32, 32);
@@ -239,14 +243,14 @@ export class AvatarRenderer {
   }
 
   private drawHead() {
-    const isHugo = this.avatar === 'HUGO';
-    const skinColor = isHugo ? '#fcd6b5' : '#fde2cf';
+    const isThiago = this.isMale();
+    const skinColor = isThiago ? '#fcd6b5' : '#fde2cf';
     const skinHighlight = '#fff0e5';
-    const skinShadow = isHugo ? '#e8a980' : '#e2ab90';
-    const hairColor = isHugo ? '#3d2314' : '#2b1b17';
+    const skinShadow = isThiago ? '#e8a980' : '#e2ab90';
+    const hairColor = isThiago ? '#3d2314' : '#2b1b17';
 
-    // Maya's high ponytail in background
-    if (!isHugo) {
+    // Marya's high ponytail in background
+    if (!isThiago) {
       this.ctx.beginPath();
       this.ctx.moveTo(35, -45);
       this.ctx.quadraticCurveTo(70, -60, 75, -20);
@@ -276,8 +280,8 @@ export class AvatarRenderer {
 
     // Hair
     this.ctx.fillStyle = hairColor;
-    if (isHugo) {
-      // Hugo's stylish modern haircut
+    if (isThiago) {
+      // Thiago's stylish modern haircut
       this.ctx.beginPath();
       this.ctx.moveTo(-44, -35);
       this.ctx.quadraticCurveTo(-46, -75, 0, -82);
@@ -287,7 +291,7 @@ export class AvatarRenderer {
       this.ctx.closePath();
       this.ctx.fill();
     } else {
-      // Maya's stylish hair with bangs
+      // Marya's stylish hair with bangs
       this.ctx.beginPath();
       this.ctx.moveTo(-45, -25);
       this.ctx.quadraticCurveTo(-48, -75, 0, -80);
@@ -367,7 +371,7 @@ export class AvatarRenderer {
     // Iris (expressive friendly brown/hazel)
     this.ctx.beginPath();
     this.ctx.arc(x, y, 5, 0, Math.PI * 2);
-    this.ctx.fillStyle = this.avatar === 'HUGO' ? '#5d4037' : '#4e342e';
+    this.ctx.fillStyle = this.isMale() ? '#5d4037' : '#4e342e';
     this.ctx.fill();
 
     // Pupil
@@ -384,7 +388,7 @@ export class AvatarRenderer {
   }
 
   private drawArmsAndHands() {
-    const skinColor = this.avatar === 'HUGO' ? '#fcd6b5' : '#fde2cf';
+    const skinColor = this.isMale() ? '#fcd6b5' : '#fde2cf';
 
     // Left Arm & Hand
     this.drawLibrasHand(-55, 60, this.handLeftX, this.handLeftY, skinColor, true);
