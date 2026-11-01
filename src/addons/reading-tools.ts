@@ -1,4 +1,5 @@
 import { store } from '../state/store';
+import { icons } from '../ui/icons';
 
 export class ReadingToolsManager {
   private guideElement: HTMLDivElement | null = null;
@@ -120,7 +121,7 @@ export class ReadingToolsManager {
         const text = (target.innerText || target.textContent || '').trim().slice(0, 150);
         this.magnifierElement.innerHTML = `
           <div style="padding: 16px; font-size: 20px; font-weight: bold; color: #111; line-height: 1.4; display: flex; align-items: center; justify-content: center; height: 100%; text-align: center;">
-            ${text || '🔍'}
+            ${text || `<span style="width: 32px; height: 32px; display: inline-flex; color: #64748b;">${icons.magnifier}</span>`}
           </div>
         `;
       }

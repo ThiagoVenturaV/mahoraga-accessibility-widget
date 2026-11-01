@@ -109,8 +109,9 @@ export class AddonsPanel {
             
             <!-- Category: AI Assistant / Libras -->
             <div>
-              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-                <span>🤖 Assistente IA & Libras</span>
+              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${icons.libras}</span>
+                <span>Tradutor de Libras 3D</span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 ${this.renderToolButton('signTranslator', 'Tradutor de Libras', 'Avatar 3D em tempo real', icons.libras)}
@@ -120,8 +121,9 @@ export class AddonsPanel {
 
             <!-- Category: Font Control -->
             <div>
-              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px;">
-                <span>🔤 Controle de Fonte</span>
+              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${icons.fontSize}</span>
+                <span>Controle de Fonte</span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 ${this.renderToolButton('fontSize', 'Tamanho da Fonte', '3 opções (+0%, +15%, +30%)', icons.fontSize)}
@@ -134,8 +136,9 @@ export class AddonsPanel {
 
             <!-- Category: Navigation & Reading -->
             <div>
-              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px;">
-                <span>🧭 Navegação & Leitura</span>
+              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${icons.readingGuide}</span>
+                <span>Navegação & Leitura</span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 ${this.renderToolButton('pageSpeech', 'Leitor de Sites', 'Leitura em voz alta (TTS)', icons.speech)}
@@ -153,8 +156,9 @@ export class AddonsPanel {
 
             <!-- Category: Color Control -->
             <div>
-              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px;">
-                <span>🎨 Controle de Cores</span>
+              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${icons.contrast}</span>
+                <span>Controle de Cores</span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 ${this.renderToolButton('contrastMode', 'Contraste', 'Escuro, Claro, Invertido', icons.contrast)}

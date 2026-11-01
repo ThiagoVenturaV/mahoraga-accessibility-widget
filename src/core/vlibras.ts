@@ -64,7 +64,7 @@ export class VLibrasManager {
         });
 
         this.isLoaded = true;
-        console.log('%c[Mahoraga ⚝ VLibras]%c Motor 3D oficial do VLibras conectado com sucesso!', 'color: #0070f3; font-weight: bold;', 'color: inherit;');
+        console.log('%c[Mahoraga - VLibras]%c Motor 3D oficial do VLibras conectado com sucesso!', 'color: #0070f3; font-weight: bold;', 'color: inherit;');
       }
 
       // Sync avatar changes from Mahoraga store to VLibras

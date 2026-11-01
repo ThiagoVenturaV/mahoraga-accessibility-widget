@@ -5,10 +5,9 @@ import { WidgetSide, WidgetAlign } from '../types';
 export class FloatingLauncher {
   private element: HTMLDivElement | null = null;
   private side: WidgetSide = 'right';
-  private align: WidgetAlign = 'bottom';
-  private isMenuOpen = false;
+  private align: WidgetAlign = 'center';
 
-  constructor(side: WidgetSide = 'right', align: WidgetAlign = 'bottom') {
+  constructor(side: WidgetSide = 'right', align: WidgetAlign = 'center') {
     this.side = side;
     this.align = align;
     this.init();
@@ -18,7 +17,7 @@ export class FloatingLauncher {
     this.element = document.createElement('div');
     this.element.className = 'ht-widget-root ht-launcher-container ht-skip';
     this.element.setAttribute('role', 'region');
-    this.element.setAttribute('aria-label', 'Ativador de Acessibilidade Hand Talk');
+    this.element.setAttribute('aria-label', 'Atalhos de Acessibilidade e Tradutor de Libras');
 
     this.render();
     document.body.appendChild(this.element);
@@ -26,13 +25,27 @@ export class FloatingLauncher {
     this.attachEvents();
 
     store.subscribe((state) => {
-      // If either window is open, highlight the launcher
-      const btn = this.element?.querySelector<HTMLElement>('.ht-launcher-main-btn');
-      if (btn) {
-        if (state.isTranslatorOpen || state.isAddonsOpen) {
-          btn.style.boxShadow = '0 0 0 4px rgba(0, 112, 243, 0.4), 0 8px 24px rgba(0, 112, 243, 0.35)';
+      if (!this.element) return;
+      const addonsBtn = this.element.querySelector<HTMLButtonElement>('.ht-lateral-btn-addons');
+      const librasBtn = this.element.querySelector<HTMLButtonElement>('.ht-lateral-btn-libras');
+
+      if (addonsBtn) {
+        if (state.isAddonsOpen) {
+          addonsBtn.classList.add('ht-lateral-active');
+          addonsBtn.style.background = '#0a3875';
         } else {
-          btn.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.2)';
+          addonsBtn.classList.remove('ht-lateral-active');
+          addonsBtn.style.background = 'transparent';
+        }
+      }
+
+      if (librasBtn) {
+        if (state.isTranslatorOpen) {
+          librasBtn.classList.add('ht-lateral-active');
+          librasBtn.style.background = '#0a3875';
+        } else {
+          librasBtn.classList.remove('ht-lateral-active');
+          librasBtn.style.background = 'transparent';
         }
       }
     });
@@ -41,118 +54,88 @@ export class FloatingLauncher {
   private render() {
     if (!this.element) return;
 
-    const isRight = this.side === 'right';
-    const isTop = this.align === 'top';
-    const isCenter = this.align === 'center';
-
+    const isRight = this.side !== 'left';
     let posStyles = '';
+
     if (isRight) {
-      posStyles += 'right: 20px;';
+      posStyles += 'right: 0; left: auto;';
     } else {
-      posStyles += 'left: 20px;';
+      posStyles += 'left: 0; right: auto;';
     }
 
-    if (isTop) {
-      posStyles += 'top: 20px;';
-    } else if (isCenter) {
-      posStyles += 'top: 50%; transform: translateY(-50%);';
+    if (this.align === 'top') {
+      posStyles += 'top: 120px;';
+    } else if (this.align === 'bottom') {
+      posStyles += 'bottom: 120px;';
     } else {
-      posStyles += 'bottom: 24px;';
+      // Default: Centered vertically on the screen edge
+      posStyles += 'top: 50%; transform: translateY(-50%);';
     }
+
+    const borderRadius = isRight ? '12px 0 0 12px' : '0 12px 12px 0';
+    const borderProp = isRight ? 'border: 2px solid #ffffff; border-right: none;' : 'border: 2px solid #ffffff; border-left: none;';
 
     this.element.innerHTML = `
-      <div class="ht-launcher-wrapper" style="
+      <div class="ht-lateral-launcher" style="
         position: fixed;
         ${posStyles}
         z-index: 2147483643;
         display: flex;
         flex-direction: column;
-        align-items: ${isRight ? 'flex-end' : 'flex-start'};
-        gap: 10px;
+        background: #1351b4;
+        ${borderProp}
+        border-radius: ${borderRadius};
+        box-shadow: -4px 6px 20px rgba(0, 0, 0, 0.22);
+        overflow: hidden;
+        width: 46px;
+        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
       ">
         
-        <!-- Expandable Options Menu -->
-        <div class="ht-launcher-menu" style="
-          display: none;
-          flex-direction: column;
-          gap: 8px;
-          background: #ffffff;
-          padding: 8px;
-          border-radius: 16px;
-          box-shadow: 0 12px 32px rgba(0,0,0,0.2);
-          border: 1px solid rgba(0,0,0,0.08);
-          animation: htFadeScale 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        ">
-          <!-- Button 1: Libras Translator -->
-          <button class="ht-launcher-opt-libras" style="
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 10px;
-            background: #f0f7ff;
-            border: 1px solid #c7e0ff;
-            color: #0070f3;
-            font-size: 0.88rem;
-            font-weight: 700;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.15s;
-          ">
-            <span style="width: 20px; height: 20px; display: inline-block;">${icons.libras}</span>
-            <span>Tradutor de Libras</span>
-          </button>
-
-          <!-- Button 2: Accessibility Panel -->
-          <button class="ht-launcher-opt-addons" style="
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 10px;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            color: #1e293b;
-            font-size: 0.88rem;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.15s;
-          ">
-            <span style="width: 20px; height: 20px; display: inline-block; color: #0070f3;">${icons.accessibility}</span>
-            <span>Recursos Assistivos</span>
-          </button>
-        </div>
-
-        <!-- Main Launcher Circle / Pill Button -->
-        <button class="ht-launcher-main-btn" style="
-          width: 58px;
-          height: 58px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #0070f3 0%, #0051b3 100%);
-          color: #ffffff;
+        <!-- Top Button: Accessibility / Addons -->
+        <button class="ht-lateral-btn ht-lateral-btn-addons" style="
+          width: 46px;
+          height: 48px;
+          background: transparent;
           border: none;
-          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-          cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-          position: relative;
-          transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+          color: #ffffff;
+          cursor: pointer;
+          padding: 0;
           outline: none;
-        " aria-label="Abrir menu de acessibilidade e tradutor de Libras Hand Talk">
-          <span style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
-            ${icons.libras}
+          transition: background 0.15s ease;
+        " title="Recursos Assistivos de Acessibilidade (Alt+A)" aria-label="Abrir painel de acessibilidade e recursos assistivos">
+          <span style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+            ${icons.accessibilityPerson}
           </span>
-          <span class="ht-launcher-pulse" style="
-            position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            border: 2px solid #0070f3;
-            opacity: 0.5;
-            animation: htPulse 2.5s infinite;
-            pointer-events: none;
-          "></span>
+        </button>
+
+        <!-- White Divider Line -->
+        <div class="ht-lateral-divider" style="
+          width: 100%;
+          height: 1.5px;
+          background: #ffffff;
+        "></div>
+
+        <!-- Bottom Button: Libras 3D Translator -->
+        <button class="ht-lateral-btn ht-lateral-btn-libras" style="
+          width: 46px;
+          height: 48px;
+          background: transparent;
+          border: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #ffffff;
+          cursor: pointer;
+          padding: 0;
+          outline: none;
+          transition: background 0.15s ease;
+        " title="Tradutor de Libras com Avatar 3D (Alt+L)" aria-label="Abrir tradutor de Libras em 3D">
+          <span style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+            ${icons.librasHands}
+          </span>
         </button>
 
       </div>
@@ -162,38 +145,39 @@ export class FloatingLauncher {
   private attachEvents() {
     if (!this.element) return;
 
-    const mainBtn = this.element.querySelector<HTMLButtonElement>('.ht-launcher-main-btn');
-    const menu = this.element.querySelector<HTMLElement>('.ht-launcher-menu');
-    const librasBtn = this.element.querySelector<HTMLButtonElement>('.ht-launcher-opt-libras');
-    const addonsBtn = this.element.querySelector<HTMLButtonElement>('.ht-launcher-opt-addons');
+    const addonsBtn = this.element.querySelector<HTMLButtonElement>('.ht-lateral-btn-addons');
+    const librasBtn = this.element.querySelector<HTMLButtonElement>('.ht-lateral-btn-libras');
+    const container = this.element.querySelector<HTMLElement>('.ht-lateral-launcher');
 
-    mainBtn?.addEventListener('click', () => {
-      this.isMenuOpen = !this.isMenuOpen;
-      if (menu) {
-        menu.style.display = this.isMenuOpen ? 'flex' : 'none';
-      }
-    });
+    // Hover effect: slight inward slide
+    if (container) {
+      const isRight = this.side !== 'left';
+      container.addEventListener('mouseenter', () => {
+        if (this.align === 'center') {
+          container.style.transform = isRight ? 'translateY(-50%) translateX(-3px)' : 'translateY(-50%) translateX(3px)';
+        } else {
+          container.style.transform = isRight ? 'translateX(-3px)' : 'translateX(3px)';
+        }
+      });
+      container.addEventListener('mouseleave', () => {
+        if (this.align === 'center') {
+          container.style.transform = 'translateY(-50%)';
+        } else {
+          container.style.transform = 'none';
+        }
+      });
+    }
 
-    librasBtn?.addEventListener('click', () => {
-      const s = store.getState();
-      store.setState({ isTranslatorOpen: !s.isTranslatorOpen });
-      this.isMenuOpen = false;
-      if (menu) menu.style.display = 'none';
-    });
-
+    // Toggle Addons Panel
     addonsBtn?.addEventListener('click', () => {
       const s = store.getState();
       store.setState({ isAddonsOpen: !s.isAddonsOpen });
-      this.isMenuOpen = false;
-      if (menu) menu.style.display = 'none';
     });
 
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!this.element?.contains(e.target as Node) && this.isMenuOpen) {
-        this.isMenuOpen = false;
-        if (menu) menu.style.display = 'none';
-      }
+    // Toggle Libras Translator
+    librasBtn?.addEventListener('click', () => {
+      const s = store.getState();
+      store.setState({ isTranslatorOpen: !s.isTranslatorOpen });
     });
   }
 

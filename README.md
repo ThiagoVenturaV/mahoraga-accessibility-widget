@@ -1,4 +1,4 @@
-# ⚔️ Mahoraga Accessibility Widget (REA Re-engineered)
+# Mahoraga Accessibility Widget (REA Re-engineered)
 
 <div align="center">
 
@@ -18,15 +18,15 @@ Comportamento da janela e ferramentas assistivas extraídos e reconstruídos atr
 
 ---
 
-## 📌 Visão Geral
+## Visão Geral
 
 O **Mahoraga Accessibility Widget** traz para qualquer página web uma experiência completa de acessibilidade digital e inclusão para pessoas surdas, cegas, com baixa visão, dislexia, daltonismo ou limitações motoras e cognitivas.
 
-Todo o comportamento do botão flutuante, da janela do tradutor com avatar, do seletor interativo de texto da página (*collector mode*), do dicionário de sinais e das mais de 15 ferramentas assistivas foi analisado e reconstruído a partir do plugin oficial da Hand Talk.
+Todo o comportamento da aba lateral de acesso rápido (lateral dock tab com ícones universais de Acessibilidade e Libras), da janela do tradutor com avatar 3D, do seletor interativo de texto da página (*collector mode*), do dicionário de sinais e das mais de 15 ferramentas assistivas foi analisado e reconstruído a partir do plugin oficial da Hand Talk.
 
 ---
 
-## 🔬 Como o REA foi Utilizado na Engenharia Reversa
+## Como o REA foi Utilizado na Engenharia Reversa
 
 Utilizando o ecossistema e técnicas do [REA (Reverse Engineer Anything)](https://github.com/morluto/rea):
 
@@ -43,9 +43,9 @@ Os scripts de análise e extração desenvolvidos durante a engenharia reversa e
 
 ---
 
-## ✨ Recursos Implementados
+## Recursos Implementados
 
-### 1. 🤖 Tradutor 3D de Libras (Motor Oficial Open-Source VLibras)
+### 1. Tradutor 3D de Libras (Motor Oficial Open-Source VLibras)
 - **Motor 3D Real do VLibras:** Tradução e sinalização autêntica em Língua Brasileira de Sinais via motor 3D WebGL oficial do VLibras (Governo Federal / UFPB - Lavid).
 - **Avatares 3D Thiago & Marya:** Avatares 3D completos — **Thiago** (baseado em Ícaro) e **Marya** (baseada em Hosana) — com expressões faciais, articulação corporal, datilologia e sinalização gramatical oficial.
 - **Tradução Gramatical em Glosas:** Conexão direta com a API oficial do VLibras (`https://traducao2.vlibras.gov.br/translate`) para geração de glosas linguísticas autênticas (ex.: `[OLÁ BEM_VINDO ACESSIBILIDADE DIGITAL]`).
@@ -57,14 +57,14 @@ Os scripts de análise e extração desenvolvidos durante a engenharia reversa e
 - **Dicionário de Libras & Sinônimos:** Modal com busca em tempo real de termos e sinais em Libras com descrições detalhadas e botão de tradução direta.
 - **Janela Arrastável e Opacidade:** Janela flutuante redimensionável e arrastável pelo cabeçalho com 3 níveis de transparência (100%, 50%, translúcido).
 
-### 2. 🔤 Controle de Fonte
+### 2. Controle de Fonte
 - **Tamanho da Fonte:** Aumento cíclico de tamanho (+0%, +15%, +30%) sem quebrar o layout da página.
 - **Fonte Amigável para Dislexia:** Tipografia *Atkinson Hyperlegible* com diferenciação clara entre caracteres similares.
 - **Espaço entre Linhas:** Ajuste de entrelinhas (Normal, 1.8x, 2.2x).
 - **Espaço entre Letras:** Aumento do respiro entre caracteres (Normal, 0.12em, 0.24em).
 - **Letras Destacadas:** Realce da primeira letra de cada parágrafo e título para facilitar a escaneabilidade visual.
 
-### 3. 🧭 Navegação & Leitura Assistiva
+### 3. Navegação & Leitura Assistiva
 - **Leitor de Sites (Text-To-Speech):** Leitura em voz alta via Web Speech API ao passar o mouse sobre parágrafos, cabeçalhos e botões.
 - **Guia de Leitura (Régua):** Régua horizontal ciano brilhante que acompanha verticalmente a linha do olhar do usuário.
 - **Máscara de Leitura:** Fundo escurecido que destaca apenas uma fresta transparente na altura do cursor.
@@ -76,7 +76,7 @@ Os scripts de análise e extração desenvolvidos durante a engenharia reversa e
 - **Parar Sons:** Silencia e pausa reprodutores de áudio e vídeo na página.
 - **Modo Leitura:** Oculta cabeçalhos, rodapés e barras laterais, centralizando a leitura limpa do artigo.
 
-### 4. 🎨 Controle de Cores & Contraste
+### 4. Controle de Cores & Contraste
 - **Alto Contraste:** 
   - *Escuro:* Fundo preto puro (`#000`), textos em amarelo e ciano de alto contraste.
   - *Claro:* Fundo branco puro (`#fff`), textos em preto com bordas sólidas.
@@ -84,13 +84,13 @@ Os scripts de análise e extração desenvolvidos durante a engenharia reversa e
 - **Intensidade de Cores:** Monocromático (preto e branco), baixa saturação ou alta saturação.
 - **Filtros para Daltonismo:** Simulação e correção via matrizes SVG para **Protanopia**, **Deuteranopia**, **Tritanopia** e **Acromatopsia**.
 
-### 5. 💾 Persistência & Reset
+### 5. Persistência & Reset
 - **LocalStorage:** Todas as preferências de acessibilidade e avatar escolhido são salvas e restauradas automaticamente.
 - **Limpar Configurações:** Botão de reset de um clique que restaura a página instantaneamente ao seu estado original.
 
 ---
 
-## 🚀 Como Usar
+## Como Usar
 
 ### 1. Inclusão via Script Tag (CDN / Produção)
 
@@ -139,7 +139,7 @@ widget.openAddons();
 
 ---
 
-## ⌨️ Atalhos de Teclado Acessíveis
+## Atalhos de Teclado Acessíveis
 
 | Atalho | Ação |
 | :--- | :--- |
@@ -150,7 +150,7 @@ widget.openAddons();
 
 ---
 
-## 📁 Estrutura do Repositório
+## Estrutura do Repositório
 
 ```text
 mahoraga-accessibility-widget/
@@ -172,7 +172,7 @@ mahoraga-accessibility-widget/
 │   ├── addons/
 │   │   └── reading-tools.ts   # Régua de leitura, máscara e lupa de aumento
 │   ├── ui/
-│   │   ├── launcher.ts        # Botão flutuante acessível
+│   │   ├── launcher.ts        # Aba lateral acessível (dock tab lateral com ícones universais)
 │   │   ├── translator-window.ts # Janela do Tradutor de Libras
 │   │   ├── addons-panel.ts    # Painel categorizado de recursos assistivos
 │   │   ├── dictionary-modal.ts# Modal do Dicionário de Libras
@@ -188,7 +188,7 @@ mahoraga-accessibility-widget/
 
 ---
 
-## 🛠️ Desenvolvimento Local
+## Desenvolvimento Local
 
 1. Clone o repositório:
 ```bash
@@ -213,12 +213,12 @@ npm run build
 
 ---
 
-## 📄 Licença
+## Licença
 
 Distribuído sob a licença [MIT](./LICENSE). Desenvolvido para fins de pesquisa, interoperabilidade e acessibilidade digital aberta.
 ---
 
-## ☸️ Por que "Mahoraga"? (A Adaptação a Todos os Fenômenos)
+## Por que "Mahoraga"? (A Adaptação a Todos os Fenômenos)
 
 <div align="center">
 
@@ -236,13 +236,13 @@ No universo de **Jujutsu Kaisen**, **Mahoraga** é o shikigami supremo e mais te
 
 Sempre que Mahoraga enfrenta uma nova condição, técnica adversária ou obstáculo, sua roda gira (*clique!*), modificando instantaneamente sua fisiologia e seus ataques para anular a barreira e superar o desafio.
 
-### 🎯 A Conexão com o Widget de Acessibilidade:
+### A Conexão com o Widget de Acessibilidade:
 Assim como a roda de Mahoraga gira para adaptar sua existência diante de qualquer fenômeno, este widget faz a roda girar para que a web se adapte dinamicamente a **qualquer necessidade de acesso humano**:
 
-* 👁️ **Baixa visão ou sensibilidade à luz?** A roda gira: *Alto Contraste Escuro, Alto Contraste Claro, Inversão e Lupa de Aumento*.
-* 🤟 **Comunidade Surda?** A roda gira: *Tradutor 3D de Libras em tempo real com Thiago & Marya, Seletor de Texto e Dicionário de Sinais*.
-* 📖 **Dislexia, TDAH ou fadiga visual?** A roda gira: *Tipografia especializada (Atkinson Hyperlegible), Guia/Régua de leitura horizontal e Máscara de foco*.
-* 🔊 **Dificuldade de leitura de texto?** A roda gira: *Leitor de Sites com síntese de voz (TTS) em português*.
-* 🧠 **Sensibilidade sensorial a movimento ou ruído?** A roda gira: *Pausa instantânea de animações/GIFs e silenciamento de reprodutores de áudio/vídeo*.
+* **Baixa visão ou sensibilidade à luz?** A roda gira: *Alto Contraste Escuro, Alto Contraste Claro, Inversão e Lupa de Aumento*.
+* **Comunidade Surda?** A roda gira: *Tradutor 3D de Libras em tempo real com Thiago & Marya, Seletor de Texto e Dicionário de Sinais*.
+* **Dislexia, TDAH ou fadiga visual?** A roda gira: *Tipografia especializada (Atkinson Hyperlegible), Guia/Régua de leitura horizontal e Máscara de foco*.
+* **Dificuldade de leitura de texto?** A roda gira: *Leitor de Sites com síntese de voz (TTS) em português*.
+* **Sensibilidade sensorial a movimento ou ruído?** A roda gira: *Pausa instantânea de animações/GIFs e silenciamento de reprodutores de áudio/vídeo*.
 
-> **"Nenhum obstáculo permanece. A interface se adapta."** ☸️
+> **"Nenhum obstáculo permanece. A interface se adapta."**

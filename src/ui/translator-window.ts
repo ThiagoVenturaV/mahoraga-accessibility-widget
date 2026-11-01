@@ -44,7 +44,7 @@ export class TranslatorWindow {
       const glossEl = this.element.querySelector<HTMLDivElement>('.ht-translator-subtitle-gloss');
       if (glossEl) {
         if (state.currentGloss) {
-          glossEl.innerText = `🧏 Glosa Libras: [${state.currentGloss}]`;
+          glossEl.innerHTML = `<span style="width: 14px; height: 14px; display: inline-flex; vertical-align: -2px; margin-right: 4px;">${icons.libras}</span> Glosa Libras: [${state.currentGloss}]`;
           glossEl.style.display = 'block';
         } else {
           glossEl.style.display = 'none';
@@ -161,7 +161,7 @@ export class TranslatorWindow {
           " title="Alternar entre Thiago (Ícaro) e Marya (Hosana)">
             <span style="width: 14px; height: 14px; display: inline-block;">${icons.libras}</span>
             <span class="ht-avatar-name-badge">Thiago</span>
-            <span style="font-size: 0.7rem; color: #64748b;">⇄</span>
+            <span style="width: 12px; height: 12px; display: inline-flex; color: #64748b;">${icons.swap}</span>
           </button>
 
           <!-- Window Controls -->
