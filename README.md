@@ -214,3 +214,33 @@ npm run build
 ## 📄 Licença
 
 Distribuído sob a licença [MIT](./LICENSE). Desenvolvido para fins de pesquisa, interoperabilidade e acessibilidade digital aberta.
+---
+
+## ☸️ Por que "Mahoraga"? (A Adaptação a Todos os Fenômenos)
+
+<div align="center">
+
+<img src="./assets/mahoraga.gif" alt="General Divino Mahoraga - Jujutsu Kaisen" width="480" style="border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" />
+
+<br/><br/>
+
+> *"Com este tesouro, eu invoco... General Divino das Oito Empunhaduras: Mahoraga!"*  
+> *(八握剣異戒神将魔虚羅 — Yatsuka-no-Tsurugi Ikaishinshō Mahoraga)*
+
+</div>
+
+No universo de **Jujutsu Kaisen**, **Mahoraga** é o shikigami supremo e mais temido da Técnica das Dez Sombras (*Ten Shadows Technique*). Sua característica mais marcante e lendária é a **Roda do Dharma (*Hōjin*) de Oito Raios** suspensa sobre sua cabeça, que lhe confere um poder absoluto:
+> **"A capacidade de se adaptar a todo e qualquer fenômeno."**
+
+Sempre que Mahoraga enfrenta uma nova condição, técnica adversária ou obstáculo, sua roda gira (*clique!*), modificando instantaneamente sua fisiologia e seus ataques para anular a barreira e superar o desafio.
+
+### 🎯 A Conexão com o Widget de Acessibilidade:
+Assim como a roda de Mahoraga gira para adaptar sua existência diante de qualquer fenômeno, este widget faz a roda girar para que a web se adapte dinamicamente a **qualquer necessidade de acesso humano**:
+
+* 👁️ **Baixa visão ou sensibilidade à luz?** A roda gira: *Alto Contraste Escuro, Alto Contraste Claro, Inversão e Lupa de Aumento*.
+* 🤟 **Comunidade Surda?** A roda gira: *Tradutor 3D de Libras em tempo real com Thiago & Marya, Seletor de Texto e Dicionário de Sinais*.
+* 📖 **Dislexia, TDAH ou fadiga visual?** A roda gira: *Tipografia especializada (Atkinson Hyperlegible), Guia/Régua de leitura horizontal e Máscara de foco*.
+* 🔊 **Dificuldade de leitura de texto?** A roda gira: *Leitor de Sites com síntese de voz (TTS) em português*.
+* 🧠 **Sensibilidade sensorial a movimento ou ruído?** A roda gira: *Pausa instantânea de animações/GIFs e silenciamento de reprodutores de áudio/vídeo*.
+
+> **"Nenhum obstáculo permanece. A interface se adapta."** ☸️
