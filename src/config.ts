@@ -55,6 +55,7 @@ export const defaultState: AccessibilityState = {
   isAddonsOpen: false,
   isDictionaryOpen: false,
   isCollectorActive: false,
+  isPageStructureOpen: false,
 
   avatar: 'THIAGO',
   speed: 1,

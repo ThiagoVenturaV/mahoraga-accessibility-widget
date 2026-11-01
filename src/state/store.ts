@@ -26,6 +26,7 @@ class StateStore {
           isAddonsOpen: false,
           isDictionaryOpen: false,
           isCollectorActive: false,
+          isPageStructureOpen: false,
           isPlaying: false
         };
       }

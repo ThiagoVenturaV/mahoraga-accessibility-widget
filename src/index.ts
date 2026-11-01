@@ -12,6 +12,7 @@ import { FloatingLauncher } from './ui/launcher';
 import { TranslatorWindow } from './ui/translator-window';
 import { AddonsPanel } from './ui/addons-panel';
 import { DictionaryModal } from './ui/dictionary-modal';
+import { PageStructureModal } from './ui/page-structure-modal';
 
 export class HandTalkWidget {
   private options: Required<WidgetOptions>;
@@ -24,6 +25,7 @@ export class HandTalkWidget {
   private translatorWindow: TranslatorWindow;
   private addonsPanel: AddonsPanel;
   private dictionaryModal: DictionaryModal;
+  private pageStructureModal: PageStructureModal;
 
   constructor(options: WidgetOptions = {}) {
     this.options = { ...defaultConfig, ...options };
@@ -51,6 +53,7 @@ export class HandTalkWidget {
     this.dictionaryModal = new DictionaryModal((term) => {
       this.translate(term);
     });
+    this.pageStructureModal = new PageStructureModal();
 
     this.collectorManager = new CollectorManager((text) => {
       this.translate(text);
@@ -93,7 +96,8 @@ export class HandTalkWidget {
         store.setState({
           isAddonsOpen: false,
           isDictionaryOpen: false,
-          isCollectorActive: false
+          isCollectorActive: false,
+          isPageStructureOpen: false
         });
       }
     });
@@ -139,6 +143,7 @@ export class HandTalkWidget {
     this.translatorWindow.destroy();
     this.addonsPanel.destroy();
     this.dictionaryModal.destroy();
+    this.pageStructureModal.destroy();
   }
 }
 

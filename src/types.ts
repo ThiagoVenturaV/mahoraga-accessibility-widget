@@ -64,6 +64,7 @@ export interface AccessibilityState {
   isAddonsOpen: boolean;
   isDictionaryOpen: boolean;
   isCollectorActive: boolean;
+  isPageStructureOpen: boolean;
 
   // Avatar Window
   avatar: AvatarType;

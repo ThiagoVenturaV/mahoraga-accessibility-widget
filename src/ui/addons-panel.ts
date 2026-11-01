@@ -149,6 +149,7 @@ export class AddonsPanel {
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 ${this.renderToolButton('pageSpeech', 'Leitor de Sites', 'Leitura em voz alta (TTS)', icons.speech)}
+                ${this.renderToolButton('pageStructure', 'Estrutura da Página', 'Navegação por títulos e seções', icons.pageStructure)}
                 ${this.renderToolButton('readingGuide', 'Guia de Leitura', 'Régua horizontal móvel', icons.readingGuide)}
                 ${this.renderToolButton('readingMask', 'Máscara Leitura', 'Foco na linha atual', icons.readingMask)}
                 ${this.renderToolButton('magnifier', 'Lupa de Conteúdo', 'Lente de aumento no mouse', icons.magnifier)}
@@ -313,6 +314,9 @@ export class AddonsPanel {
       case 'pageSpeech':
         store.setState({ pageSpeechActive: !s.pageSpeechActive });
         break;
+      case 'pageStructure':
+        store.setState({ isPageStructureOpen: true });
+        break;
       case 'readingGuide':
         store.setState({ readingGuideActive: !s.readingGuideActive });
         break;
@@ -378,6 +382,7 @@ export class AddonsPanel {
       letterSpacing: { active: s.letterSpacingLevel > 0, label: s.letterSpacingLevel === 0 ? 'Padrão' : s.letterSpacingLevel === 1 ? '0.12em' : '0.24em' },
       highlightLetters: { active: s.highlightLetters },
       pageSpeech: { active: s.pageSpeechActive },
+      pageStructure: { active: s.isPageStructureOpen },
       readingGuide: { active: s.readingGuideActive },
       readingMask: { active: s.readingMaskActive },
       magnifier: { active: s.magnifierActive },
