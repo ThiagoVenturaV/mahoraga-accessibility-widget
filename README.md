@@ -214,4 +214,3 @@ npm run build
 ## 📄 Licença
 
 Distribuído sob a licença [MIT](./LICENSE). Desenvolvido para fins de pesquisa, interoperabilidade e acessibilidade digital aberta.
-Marcas e personagens de referência (Hugo e Maya) são marcas registradas de Hand Talk.
