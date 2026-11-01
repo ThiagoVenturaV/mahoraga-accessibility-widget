@@ -70,8 +70,16 @@ export class VLibrasManager {
       this.setupRootWatcher();
       this.hookNativeTranslation();
 
-      // Sync avatar changes from Mahoraga store to VLibras
+      // Sync avatar and open/close state from Mahoraga store to VLibras
+      let prevTranslatorOpen = store.getState().isTranslatorOpen;
       store.subscribe((state) => {
+        if (state.isTranslatorOpen && !prevTranslatorOpen) {
+          this.openPlayer();
+        } else if (!state.isTranslatorOpen && prevTranslatorOpen) {
+          this.closePlayer();
+        }
+        prevTranslatorOpen = state.isTranslatorOpen;
+
         if (state.avatar !== this.currentAvatar) {
           this.currentAvatar = state.avatar;
           this.setAvatar(state.avatar);

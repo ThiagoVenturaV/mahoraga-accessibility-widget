@@ -1,6 +1,7 @@
 import { store } from '../state/store';
 import { icons } from './icons';
 import { WidgetSide, WidgetAlign } from '../types';
+import { vlibrasManager } from '../core/vlibras';
 
 export class FloatingLauncher {
   private element: HTMLDivElement | null = null;
@@ -177,7 +178,13 @@ export class FloatingLauncher {
     // Toggle Libras Translator
     librasBtn?.addEventListener('click', () => {
       const s = store.getState();
-      store.setState({ isTranslatorOpen: !s.isTranslatorOpen });
+      const next = !s.isTranslatorOpen;
+      store.setState({ isTranslatorOpen: next });
+      if (next) {
+        vlibrasManager.openPlayer();
+      } else {
+        vlibrasManager.closePlayer();
+      }
     });
   }
 

@@ -154,8 +154,10 @@ export class CollectorManager {
 
     const selectedText = selection.toString().trim();
     if (selectedText.length > 1 && selectedText.length <= 1000) {
-      // Trigger translation immediately
-      this.onSelectTextCallback(selectedText);
+      // Only translate on selection if collector mode is active or translator is open
+      if (this.isActive || store.getState().isTranslatorOpen) {
+        this.onSelectTextCallback(selectedText);
+      }
     }
   }
 

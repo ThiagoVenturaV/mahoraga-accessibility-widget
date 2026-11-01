@@ -9,7 +9,6 @@ import { AudioManager } from './core/audio';
 import { vlibrasManager } from './core/vlibras';
 import { ReadingToolsManager } from './addons/reading-tools';
 import { FloatingLauncher } from './ui/launcher';
-import { TranslatorWindow } from './ui/translator-window';
 import { AddonsPanel } from './ui/addons-panel';
 import { DictionaryModal } from './ui/dictionary-modal';
 import { PageStructureModal } from './ui/page-structure-modal';
@@ -22,7 +21,6 @@ export class HandTalkWidget {
   private audioManager: AudioManager;
   private readingToolsManager: ReadingToolsManager;
   private launcher: FloatingLauncher;
-  private translatorWindow: TranslatorWindow;
   private addonsPanel: AddonsPanel;
   private dictionaryModal: DictionaryModal;
   private pageStructureModal: PageStructureModal;
@@ -48,7 +46,6 @@ export class HandTalkWidget {
     vlibrasManager.init();
 
     // Initialize UI components
-    this.translatorWindow = new TranslatorWindow();
     this.addonsPanel = new AddonsPanel();
     this.dictionaryModal = new DictionaryModal((term) => {
       this.translate(term);
@@ -105,10 +102,12 @@ export class HandTalkWidget {
 
   public openTranslator() {
     store.setState({ isTranslatorOpen: true });
+    vlibrasManager.openPlayer();
   }
 
   public closeTranslator() {
     store.setState({ isTranslatorOpen: false, isCollectorActive: false });
+    vlibrasManager.closePlayer();
   }
 
   public openAddons() {
@@ -120,7 +119,7 @@ export class HandTalkWidget {
   }
 
   public translate(text: string) {
-    this.translatorWindow.translateText(text);
+    vlibrasManager.translateAndPlay(text);
   }
 
   public setAvatar(avatar: AvatarType) {
@@ -139,7 +138,6 @@ export class HandTalkWidget {
     this.audioManager.destroy();
     this.readingToolsManager.destroy();
     this.launcher.destroy();
-    this.translatorWindow.destroy();
     this.addonsPanel.destroy();
     this.dictionaryModal.destroy();
     this.pageStructureModal.destroy();
