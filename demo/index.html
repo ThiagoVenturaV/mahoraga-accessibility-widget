@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hand Talk Accessibility Widget — Demonstração Interativa (REA)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Raleway:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0070f3;
+      --primary-hover: #0051b3;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .nav-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .logo-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #0070f3, #0051b3);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 64px 0 40px;
+      text-align: center;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #eef6ff;
+      border: 1px solid #c7e0ff;
+      color: var(--primary);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      margin: 0 0 16px;
+      letter-spacing: -0.02em;
+      color: #0f172a;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto 32px;
+    }
+
+    .cta-group {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 6px 18px rgba(0, 112, 243, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #f1f5f9;
+      transform: translateY(-2px);
+    }
+
+    /* Cards grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin: 48px 0;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      padding: 28px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+    }
+
+    .card h2, .card h3 {
+      margin-top: 0;
+      color: #0f172a;
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+
+    .interactive-box {
+      background: #ffffff;
+      border: 2px dashed #0070f3;
+      border-radius: 16px;
+      padding: 24px;
+      margin: 36px 0;
+      text-align: center;
+    }
+
+    .animated-pulse-banner {
+      background: linear-gradient(90deg, #0070f3, #7928ca, #ff0080);
+      color: #ffffff;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-weight: 700;
+      text-align: center;
+      margin: 20px 0;
+      animation: pulseGlow 3s infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      from { filter: hue-rotate(0deg); }
+      to { filter: hue-rotate(45deg); }
+    }
+
+    footer {
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+      margin-top: 60px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav-wrapper">
+      <a href="#" class="logo-badge">
+        <div class="logo-icon">HT</div>
+        <div>
+          <strong style="font-size: 1.15rem; display: block;">Hand Talk Widget</strong>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Acessibilidade Digital & Libras</span>
+        </div>
+      </a>
+      <nav class="nav-links">
+        <a href="#artigo" class="nav-link">Artigo</a>
+        <a href="#recursos" class="nav-link">Recursos Assistivos</a>
+        <a href="#dicionario" class="nav-link">Dicionário</a>
+        <a href="https://github.com/ThiagoVenturaV/handtalk-accessibility-widget" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;" target="_blank">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-tag">
+        <span>⚡ Engenharia Reversa REA</span> · <span>WCAG 2.1 AA</span> · <span>Libras 3D</span>
+      </div>
+      <h1>Acessibilidade Digital com Tradutor de Libras</h1>
+      <p>
+        Uma replicação fiel e aprimorada do comportamento do plugin <strong>Hand Talk</strong>, construída através de engenharia reversa com <strong>REA</strong>. Experimente os avatares virtuais Hugo e Maya, além de mais de 15 ferramentas de assistência para leitura e contraste.
+      </p>
+      
+      <div class="cta-group">
+        <button id="btn-open-libras" class="btn btn-primary">
+          <span>🤟 Abrir Tradutor de Libras</span>
+        </button>
+        <button id="btn-open-addons" class="btn btn-secondary">
+          <span>⚙️ Recursos Assistivos</span>
+        </button>
+        <button id="btn-test-collector" class="btn btn-secondary">
+          <span>🎯 Ativar Seletor de Texto</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Animated Banner to test "Pausar Animações" -->
+    <div class="animated-pulse-banner">
+      ✨ Animação ativa para demonstração do recurso "Pausar Animações"
+    </div>
+
+    <!-- Article Content to test font, spacing, reader mode, TTS, reading guide, mask -->
+    <section id="artigo" class="card" style="margin-top: 24px;">
+      <h2>Inclusão e Comunicação Acessível na Web</h2>
+      <p>
+        A Língua Brasileira de Sinais (<strong>Libras</strong>) é a língua natural de comunicação de milhões de pessoas surdas no Brasil. Na internet, grande parte dos conteúdos é apresentada exclusivamente na forma de texto em português, o que pode representar uma barreira de compreensão, já que para muitos surdos, o português é uma segunda língua com estrutura gramatical completamente distinta.
+      </p>
+      <p>
+        Com ferramentas assistivas integradas como o tradutor virtual 3D, leitores de tela em voz alta, réguas e máscaras de leitura e modos de alto contraste, garantimos que qualquer usuário possa navegar com autonomia, conforto e independência.
+      </p>
+      
+      <!-- Interactive translation trigger box -->
+      <div class="interactive-box">
+        <h3 style="margin-top: 0; color: #0070f3;">Experimente Traduzir em Libras:</h3>
+        <p style="margin-bottom: 16px; color: #64748b;">Clique nos botões abaixo ou selecione qualquer palavra deste parágrafo:</p>
+        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+          <button class="btn btn-secondary quick-translate" data-phrase="Olá! Seja bem-vindo à Hand Talk">"Olá! Seja bem-vindo à Hand Talk"</button>
+          <button class="btn btn-secondary quick-translate" data-phrase="Acessibilidade digital inclui todas as pessoas">"Acessibilidade digital"</button>
+          <button class="btn btn-secondary quick-translate" data-phrase="Obrigado por apoiar a inclusão em Libras">"Obrigado por apoiar"</button>
+        </div>
+      </div>
+
+      <!-- Links section to test "Destacar Links" -->
+      <h3>Links Importantes para Consulta</h3>
+      <p>
+        Consulte as diretrizes internacionais da <a href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank">W3C Web Content Accessibility Guidelines (WCAG)</a> e conheça o projeto original em <a href="https://www.handtalk.me/br/" target="_blank">Hand Talk Oficial</a>.
+      </p>
+
+      <!-- Images to test "Esconder Imagens" -->
+      <h3>Recursos Visuais e Amostras</h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div>
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80" alt="Profissional comunicando-se com acessibilidade" />
+          <span style="font-size: 0.85rem; color: #64748b;">Comunicação inclusiva no ambiente digital.</span>
+        </div>
+        <div>
+          <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80" alt="Equipe discutindo desenvolvimento inclusivo" />
+          <span style="font-size: 0.85rem; color: #64748b;">Tecnologia assistiva ao alcance de todos.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grid of Features -->
+    <section id="recursos" class="grid">
+      <div class="card">
+        <h3>🤖 Tradutor Virtual 3D</h3>
+        <p>Avatares 3D Hugo e Maya com expressões faciais e gestos de sinalização em Libras e datilologia sincronizada.</p>
+        <button class="btn btn-secondary" onclick="window.ht.openTranslator()">Testar Avatar</button>
+      </div>
+
+      <div class="card">
+        <h3>🔤 Controle de Fonte</h3>
+        <p>Ajuste cíclico de tamanho (+0%, +15%, +30%), fonte para dislexia, espaçamento de entrelinhas e letras.</p>
+        <button class="btn btn-secondary" onclick="window.ht.openAddons()">Ajustar Fontes</button>
+      </div>
+
+      <div class="card">
+        <h3>🎨 Cores e Alto Contraste</h3>
+        <p>Modo escuro de alto contraste, alto contraste claro, inversão de cores e filtros para daltonismo (protanopia/tritanopia).</p>
+        <button class="btn btn-secondary" onclick="window.ht.openAddons()">Ver Contrastes</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>
+        Hand Talk Accessibility Widget — Criado por <strong>Thiago Ventura</strong> via engenharia reversa com <strong>REA</strong>.
+      </p>
+      <p style="font-size: 0.8rem; color: #94a3b8;">
+        Atalhos de teclado acessíveis: <code>Alt + A</code> (Recursos Assistivos) · <code>Alt + L</code> (Tradutor de Libras) · <code>Esc</code> (Fechar janelas)
+      </p>
+    </div>
+  </footer>
+
+  <!-- Script initialization -->
+  <script type="module">
+    import { HT } from '../src/index.ts';
+
+    // Initialize Hand Talk Widget with exact Hand Talk configuration signature
+    window.ht = new HT({
+      token: "demo-token-handtalk",
+      avatar: "HUGO",
+      align: "bottom",
+      side: "right",
+      highContrast: false,
+      opacity: 100
+    });
+
+    // Wire demo page buttons
+    document.getElementById('btn-open-libras')?.addEventListener('click', () => {
+      window.ht.openTranslator();
+    });
+
+    document.getElementById('btn-open-addons')?.addEventListener('click', () => {
+      window.ht.openAddons();
+    });
+
+    document.getElementById('btn-test-collector')?.addEventListener('click', () => {
+      window.ht.openTranslator();
+      import('../src/state/store.ts').then(({ store }) => {
+        store.setState({ isCollectorActive: true });
+      });
+    });
+
+    document.querySelectorAll('.quick-translate').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const phrase = btn.getAttribute('data-phrase');
+        if (phrase) {
+          window.ht.translate(phrase);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
