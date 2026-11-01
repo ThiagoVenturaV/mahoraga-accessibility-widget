@@ -24,6 +24,12 @@ export class AddonsPanel {
     store.subscribe((state) => {
       if (!this.element) return;
       this.element.style.display = state.isAddonsOpen ? 'flex' : 'none';
+      if (state.isAddonsOpen) {
+        const card = this.element.querySelector<HTMLElement>('.ht-addons-card');
+        if (card) {
+          card.style.transform = 'translateX(0)';
+        }
+      }
       this.updateActiveIndicators();
     });
   }
@@ -37,7 +43,7 @@ export class AddonsPanel {
         inset: 0;
         background: rgba(0, 0, 0, 0.45);
         backdrop-filter: blur(4px);
-        z-index: 2147483644;
+        z-index: 2147483646;
         display: flex;
         justify-content: flex-end;
       ">
@@ -50,7 +56,8 @@ export class AddonsPanel {
           display: flex;
           flex-direction: column;
           overflow: hidden;
-          animation: htSlideInRight 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          transform: translateX(0);
+          animation: htSlideInRight 0.28s cubic-bezier(0.16, 1, 0.3, 1);
         ">
           
           <!-- Header -->

@@ -67,6 +67,8 @@ export class VLibrasManager {
         console.log('%c[Mahoraga - VLibras]%c Motor 3D oficial do VLibras conectado com sucesso!', 'color: #0070f3; font-weight: bold;', 'color: inherit;');
       }
 
+      this.setupRootWatcher();
+
       // Sync avatar changes from Mahoraga store to VLibras
       store.subscribe((state) => {
         if (state.avatar !== this.currentAvatar) {
@@ -79,6 +81,50 @@ export class VLibrasManager {
     } finally {
       this.isInitializing = false;
     }
+  }
+
+  private setupRootWatcher() {
+    const checkAndFix = () => {
+      const appRoot = document.getElementById('vlibras-app-root');
+      if (appRoot) {
+        this.ensureShadowFix(appRoot);
+      }
+    };
+
+    checkAndFix();
+    const observer = new MutationObserver(checkAndFix);
+    observer.observe(document.body, { childList: true });
+  }
+
+  private ensureShadowFix(appRoot: HTMLElement) {
+    if (!appRoot.shadowRoot) return;
+    if (appRoot.shadowRoot.getElementById('mahoraga-vlibras-fix')) return;
+
+    const style = document.createElement('style');
+    style.id = 'mahoraga-vlibras-fix';
+    style.textContent = `
+      .opacity-0 {
+        pointer-events: none !important;
+        visibility: hidden !important;
+      }
+    `;
+    appRoot.shadowRoot.appendChild(style);
+
+    // Synchronize close button inside VLibras shadow DOM with Mahoraga store
+    const shadowObserver = new MutationObserver(() => {
+      const buttons = appRoot.shadowRoot?.querySelectorAll('button');
+      buttons?.forEach((btn) => {
+        const aria = (btn.getAttribute('aria-label') || '').toLowerCase();
+        if ((aria.includes('fechar') || aria.includes('close')) && !btn.hasAttribute('data-ht-sync')) {
+          btn.setAttribute('data-ht-sync', 'true');
+          btn.addEventListener('click', () => {
+            store.setState({ isTranslatorOpen: false });
+            this.closePlayer();
+          });
+        }
+      });
+    });
+    shadowObserver.observe(appRoot.shadowRoot, { childList: true, subtree: true });
   }
 
   private loadScript(src: string): Promise<void> {
@@ -100,6 +146,26 @@ export class VLibrasManager {
    * Opens the official VLibras 3D WebGL player window
    */
   public openPlayer() {
+    try {
+      const stored = localStorage.getItem('@vlibras-widget');
+      if (stored && stored.includes('"isOpen":false')) {
+        localStorage.setItem('@vlibras-widget', stored.replace('"isOpen":false', '"isOpen":true'));
+      }
+    } catch {}
+
+    const appRoot = document.getElementById('vlibras-app-root');
+    if (appRoot) {
+      appRoot.style.display = '';
+      appRoot.style.pointerEvents = '';
+      this.ensureShadowFix(appRoot);
+
+      // Force toggle attribute so MutationObserver triggers reliably
+      appRoot.removeAttribute('data-active');
+      requestAnimationFrame(() => {
+        appRoot.setAttribute('data-active', 'true');
+      });
+    }
+
     // 1. Try window.VLibrasWidget.open()
     if (typeof window.VLibrasWidget?.open === 'function') {
       window.VLibrasWidget.open();
@@ -115,7 +181,6 @@ export class VLibrasManager {
     }
 
     // 3. Fallback: activate app root directly if loaded
-    const appRoot = document.getElementById('vlibras-app-root');
     if (appRoot) {
       appRoot.setAttribute('data-active', 'true');
     }
@@ -128,7 +193,15 @@ export class VLibrasManager {
     const appRoot = document.getElementById('vlibras-app-root');
     if (appRoot) {
       appRoot.setAttribute('data-active', 'false');
+      appRoot.style.pointerEvents = 'none';
+      appRoot.style.display = 'none';
     }
+    try {
+      const stored = localStorage.getItem('@vlibras-widget');
+      if (stored && stored.includes('"isOpen":true')) {
+        localStorage.setItem('@vlibras-widget', stored.replace('"isOpen":true', '"isOpen":false'));
+      }
+    } catch {}
   }
 
   /**

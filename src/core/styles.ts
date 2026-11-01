@@ -205,29 +205,28 @@ export class StyleManager {
       `;
     } else if (state.contrastMode === 'invert') {
       css += `
-        html {
+        body > :not(.ht-widget-root):not(#vlibras-app-root):not(#vlibras-access-wrapper) {
           filter: invert(100%) hue-rotate(180deg) !important;
-          background: #000000 !important;
         }
-        .ht-widget-root {
-          filter: invert(100%) hue-rotate(180deg) !important;
+        body {
+          background-color: #000000 !important;
         }
       `;
     }
 
     // Saturation
     if (state.saturationMode === 'monochrome') {
-      css += `body > :not(.ht-widget-root) { filter: grayscale(100%) !important; }`;
+      css += `body > :not(.ht-widget-root):not(#vlibras-app-root):not(#vlibras-access-wrapper) { filter: grayscale(100%) !important; }`;
     } else if (state.saturationMode === 'low-saturation') {
-      css += `body > :not(.ht-widget-root) { filter: saturate(40%) !important; }`;
+      css += `body > :not(.ht-widget-root):not(#vlibras-app-root):not(#vlibras-access-wrapper) { filter: saturate(40%) !important; }`;
     } else if (state.saturationMode === 'high-saturation') {
-      css += `body > :not(.ht-widget-root) { filter: saturate(200%) !important; }`;
+      css += `body > :not(.ht-widget-root):not(#vlibras-app-root):not(#vlibras-access-wrapper) { filter: saturate(200%) !important; }`;
     }
 
     // Colorblind Mode
     if (state.colorblindMode !== 'none') {
       css += `
-        body > :not(.ht-widget-root) {
+        body > :not(.ht-widget-root):not(#vlibras-app-root):not(#vlibras-access-wrapper) {
           filter: url(#ht-${state.colorblindMode}) !important;
         }
       `;

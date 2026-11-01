@@ -32,7 +32,7 @@ export class ReadingToolsManager {
 
   private createGuide() {
     this.guideElement = document.createElement('div');
-    this.guideElement.className = 'ht-reading-guide ht-skip';
+    this.guideElement.className = 'ht-widget-root ht-reading-guide ht-skip';
     this.guideElement.style.cssText = `
       position: fixed;
       left: 0;
@@ -51,7 +51,7 @@ export class ReadingToolsManager {
 
   private createMask() {
     this.maskElement = document.createElement('div');
-    this.maskElement.className = 'ht-reading-mask ht-skip';
+    this.maskElement.className = 'ht-widget-root ht-reading-mask ht-skip';
     this.maskElement.style.cssText = `
       position: fixed;
       top: 0;
@@ -68,7 +68,7 @@ export class ReadingToolsManager {
 
   private createMagnifier() {
     this.magnifierElement = document.createElement('div');
-    this.magnifierElement.className = 'ht-magnifier ht-skip';
+    this.magnifierElement.className = 'ht-widget-root ht-magnifier ht-skip';
     this.magnifierElement.style.cssText = `
       position: fixed;
       width: 160px;

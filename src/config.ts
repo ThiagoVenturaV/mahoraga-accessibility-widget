@@ -3,7 +3,7 @@ import { WidgetOptions, AccessibilityState } from './types';
 export const defaultConfig: Required<WidgetOptions> = {
   token: 'mahoraga-accessibility-widget',
   avatar: 'THIAGO',
-  align: 'bottom',
+  align: 'center',
   side: 'right',
   maxTextSize: 800,
   highContrast: false,
@@ -14,7 +14,7 @@ export const defaultConfig: Required<WidgetOptions> = {
   parentElement: null,
   doNotTrack: false,
   mobileConfig: {
-    align: 'bottom',
+    align: 'center',
     side: 'right'
   },
   addonsMap: {

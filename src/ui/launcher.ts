@@ -79,7 +79,7 @@ export class FloatingLauncher {
       <div class="ht-lateral-launcher" style="
         position: fixed;
         ${posStyles}
-        z-index: 2147483643;
+        z-index: 2147483647;
         display: flex;
         flex-direction: column;
         background: #1351b4;

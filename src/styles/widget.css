@@ -35,6 +35,7 @@
 
 /* Lateral Edge Launcher Tab */
 .ht-lateral-launcher {
+  z-index: 2147483647 !important;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
 }
 
@@ -101,8 +102,21 @@
   background: #94a3b8;
 }
 
+/* Ensure VLibras 3D container never intercepts clicks or creates invisible blocking overlays when closed */
+#vlibras-app-root:not([data-active="true"]),
+#vlibras-app-root[data-active="false"] {
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+#vlibras-app-root {
+  z-index: 2147483645 !important;
+}
+
 /* VLibras Widget integration: hide duplicate floating button so Mahoraga Lateral Launcher is the unified trigger */
 #vlibras-access-wrapper {
+  display: none !important;
   opacity: 0 !important;
   pointer-events: none !important;
 }
