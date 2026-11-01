@@ -1,7 +1,7 @@
 import { WidgetOptions, AccessibilityState } from './types';
 
 export const defaultConfig: Required<WidgetOptions> = {
-  token: 'handtalk-open-widget',
+  token: 'mahoraga-accessibility-widget',
   avatar: 'THIAGO',
   align: 'bottom',
   side: 'right',

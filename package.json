@@ -1,9 +1,9 @@
 {
-  "name": "handtalk-accessibility-widget",
+  "name": "mahoraga-accessibility-widget",
   "version": "1.0.0",
-  "description": "Widget de acessibilidade digital e tradutor de Libras com avatar virtual 3D, engenharia reversa do Hand Talk via REA.",
-  "main": "dist/handtalk-widget.umd.js",
-  "module": "dist/handtalk-widget.es.js",
+  "description": "Mahoraga Accessibility Widget — Widget de acessibilidade digital e tradutor de Libras com avatares virtuais 3D (Thiago & Marya), engenharia reversa do Hand Talk via REA.",
+  "main": "dist/mahoraga-widget.umd.js",
+  "module": "dist/mahoraga-widget.es.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "dev": "vite",

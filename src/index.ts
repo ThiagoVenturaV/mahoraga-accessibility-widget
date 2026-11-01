@@ -67,7 +67,7 @@ export class HandTalkWidget {
     // Accessible keyboard shortcut (Alt + A to open accessibility, Alt + L to open Libras)
     this.setupKeyboardShortcuts();
 
-    console.log('%c[Hand Talk Widget]%c Inicializado com sucesso! (REA Re-engineering)', 'color: #0070f3; font-weight: bold;', 'color: inherit;');
+    console.log('%c[Mahoraga Accessibility Widget]%c Inicializado com sucesso! (REA Re-engineering)', 'color: #0070f3; font-weight: bold;', 'color: inherit;');
   }
 
   private setupKeyboardShortcuts() {
@@ -139,18 +139,25 @@ export class HandTalkWidget {
   }
 }
 
-// Global alias matching Hand Talk's exact constructor: window.ht = new HT({...})
+// Aliases for Mahoraga and Hand Talk compatibility
+export const MahoragaWidget = HandTalkWidget;
+export const Mahoraga = HandTalkWidget;
 export const HT = HandTalkWidget;
 
 declare global {
   interface Window {
+    Mahoraga: typeof HandTalkWidget;
+    MahoragaWidget: typeof HandTalkWidget;
     HT: typeof HandTalkWidget;
     HandTalkWidget: typeof HandTalkWidget;
+    mahoraga?: HandTalkWidget;
     ht?: HandTalkWidget;
   }
 }
 
 if (typeof window !== 'undefined') {
+  window.Mahoraga = HandTalkWidget;
+  window.MahoragaWidget = HandTalkWidget;
   window.HT = HandTalkWidget;
   window.HandTalkWidget = HandTalkWidget;
 }

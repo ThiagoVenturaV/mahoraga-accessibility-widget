@@ -5,14 +5,14 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'HT',
-      fileName: (format) => `handtalk-widget.${format}.js`,
+      name: 'Mahoraga',
+      fileName: (format) => `mahoraga-widget.${format}.js`,
       formats: ['es', 'umd']
     },
     rollupOptions: {
       output: {
         exports: 'named',
-        assetFileNames: 'handtalk-widget.[ext]'
+        assetFileNames: 'mahoraga-widget.[ext]'
       }
     }
   }

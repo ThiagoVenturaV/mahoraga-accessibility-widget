@@ -1,4 +1,4 @@
-# 🤟 Hand Talk Accessibility Widget (REA Re-engineered)
+# ⚔️ Mahoraga Accessibility Widget (REA Re-engineered)
 
 <div align="center">
 
@@ -19,7 +19,7 @@ Comportamento e arquitetura totalmente extraídos e reconstruídos através de e
 
 ## 📌 Visão Geral
 
-O **Hand Talk Accessibility Widget** traz para qualquer página web uma experiência completa de acessibilidade digital e inclusão para pessoas surdas, cegas, com baixa visão, dislexia, daltonismo ou limitações motoras e cognitivas.
+O **Mahoraga Accessibility Widget** traz para qualquer página web uma experiência completa de acessibilidade digital e inclusão para pessoas surdas, cegas, com baixa visão, dislexia, daltonismo ou limitações motoras e cognitivas.
 
 Todo o comportamento do botão flutuante, da janela do tradutor com avatar, do seletor interativo de texto da página (*collector mode*), do dicionário de sinais e das mais de 15 ferramentas assistivas foi analisado e reconstruído a partir do plugin oficial da Hand Talk.
 
@@ -95,13 +95,13 @@ Os scripts de análise e extração desenvolvidos durante a engenharia reversa e
 Adicione o script e a folha de estilo compilados no final do `<body>` do seu site:
 
 ```html
-<!-- Hand Talk Widget -->
-<link rel="stylesheet" href="dist/handtalk-widget.css" />
-<script src="dist/handtalk-widget.umd.js"></script>
+<!-- Mahoraga Accessibility Widget -->
+<link rel="stylesheet" href="dist/mahoraga-widget.css" />
+<script src="dist/mahoraga-widget.umd.js"></script>
 
 <script>
   window.onload = function() {
-    window.ht = new HT({
+    window.mahoraga = new Mahoraga({
       token: "meu-site-token",
       avatar: "THIAGO",     // "THIAGO" ou "MARYA"
       side: "right",         // "right" ou "left"
@@ -116,14 +116,14 @@ Adicione o script e a folha de estilo compilados no final do `<body>` do seu sit
 ### 2. Inclusão via NPM / Módulo ES
 
 ```bash
-npm install handtalk-accessibility-widget
+npm install mahoraga-accessibility-widget
 ```
 
 ```typescript
-import { HT } from 'handtalk-accessibility-widget';
-import 'handtalk-accessibility-widget/dist/handtalk-widget.css';
+import { Mahoraga } from 'mahoraga-accessibility-widget';
+import 'mahoraga-accessibility-widget/dist/mahoraga-widget.css';
 
-const widget = new HT({
+const widget = new Mahoraga({
   avatar: 'THIAGO',
   side: 'right',
   align: 'bottom'
@@ -190,8 +190,8 @@ handtalk-accessibility-widget/
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/ThiagoVenturaV/handtalk-accessibility-widget.git
-cd handtalk-accessibility-widget
+git clone https://github.com/ThiagoVenturaV/mahoraga-accessibility-widget.git
+cd mahoraga-accessibility-widget
 ```
 
 2. Instale as dependências:
