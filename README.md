@@ -6,10 +6,11 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.4-blue.svg)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-5.4-646CFF.svg)](https://vitejs.dev/)
 [![WCAG 2.1 AA](https://img.shields.io/badge/Accessibility-WCAG%202.1%20AA-success.svg)](https://www.w3.org/WAI/standards-guidelines/wcag/)
+[![VLibras Engine](https://img.shields.io/badge/Libras%20Engine-VLibras%203D%20(Open%20Source)-0070f3.svg)](https://vlibras.gov.br/)
 [![REA Powered](https://img.shields.io/badge/Reverse%20Engineered%20With-REA-purple.svg)](https://github.com/morluto/rea)
 
-**Widget moderno de acessibilidade digital e tradutor de Língua Brasileira de Sinais (Libras) com avatares virtuais 3D (Thiago & Marya).**  
-Comportamento e arquitetura totalmente extraídos e reconstruídos através de engenharia reversa no plugin da [Hand Talk](https://www.handtalk.me/br/) utilizando o framework **REA** (*Reverse Engineer Anything*).
+**Widget moderno de acessibilidade digital e tradutor de Língua Brasileira de Sinais (Libras) com motor 3D oficial open-source do VLibras e avatares Thiago & Marya.**  
+Comportamento da janela e ferramentas assistivas extraídos e reconstruídos através de engenharia reversa no plugin da [Hand Talk](https://www.handtalk.me/br/) utilizando o framework **REA** (*Reverse Engineer Anything*), integrados diretamente ao motor 3D aberto oficial do **VLibras** (Governo Federal / UFPB).
 
 [Demonstração Interativa](#demonstração-interativa) · [Como o REA foi Utilizado](#como-o-rea-foi-utilizado) · [Recursos Implementados](#recursos-implementados) · [Como Usar](#como-usar) · [Atalhos de Teclado](#atalhos-de-teclado)
 
@@ -44,15 +45,16 @@ Os scripts de análise e extração desenvolvidos durante a engenharia reversa e
 
 ## ✨ Recursos Implementados
 
-### 1. 🤖 Assistente IA & Tradutor de Libras
-- **Avatares 3D Interativos:** Renderização em tempo real de **Thiago** (avatar masculino) e **Marya** (avatar feminina) com alternância com um clique.
-- **Expressões Faciais e Gestos de Libras:** Animações naturais de respiração, piscadas, sorrisos e gestos sincronizados de datilologia e sinais em Libras.
-- **Seletor de Texto (*Collector Mode*):** Passe o mouse sobre qualquer elemento do site para destacá-lo com retângulo pontilhado e clique para enviar diretamente ao avatar.
+### 1. 🤖 Tradutor 3D de Libras (Motor Oficial Open-Source VLibras)
+- **Motor 3D Real do VLibras:** Tradução e sinalização autêntica em Língua Brasileira de Sinais via motor 3D WebGL oficial do VLibras (Governo Federal / UFPB - Lavid).
+- **Avatares 3D Thiago & Marya:** Avatares 3D completos — **Thiago** (baseado em Ícaro) e **Marya** (baseada em Hosana) — com expressões faciais, articulação corporal, datilologia e sinalização gramatical oficial.
+- **Tradução Gramatical em Glosas:** Conexão direta com a API oficial do VLibras (`https://traducao2.vlibras.gov.br/translate`) para geração de glosas linguísticas autênticas (ex.: `[OLÁ BEM_VINDO ACESSIBILIDADE DIGITAL]`).
+- **Seletor de Texto (*Collector Mode*):** Passe o mouse sobre qualquer elemento do site para destacá-lo com retângulo pontilhado e clique para enviar diretamente ao avatar 3D.
 - **Tradução por Seleção:** Tradução instantânea de qualquer texto selecionado com o cursor na página.
-- **Controle de Velocidade:** Ajuste cíclico de velocidade de sinalização em 4 níveis: **0.5x**, **1.0x (Normal)**, **1.5x (Rápido)** e **2.0x (Super Rápido)**.
-- **Repetir Tradução:** Botão de replay para rever a sinalização da frase quantas vezes desejar.
-- **Legendas Dinâmicas:** Exibição sincronizada do texto transcrito logo abaixo do avatar.
-- **Dicionário de Libras & Sinônimos:** Modal com busca em tempo real de termos e sinais em Libras com descrições detalhadas e botão "Ver Sinal".
+- **Controle de Velocidade:** Ajuste cíclico de velocidade de sinalização em 4 níveis: **0.5x**, **1.0x (Normal)**, **1.5x (Rápido)** e **2.0x (Super Rápido)** integrado ao motor 3D.
+- **Repetir Tradução:** Botão de replay para rever a sinalização da frase no avatar 3D quantas vezes desejar.
+- **Legendas Dinâmicas & Glosas:** Exibição sincronizada do texto original e da glosa gramatical em Libras.
+- **Dicionário de Libras & Sinônimos:** Modal com busca em tempo real de termos e sinais em Libras com descrições detalhadas e botão de tradução direta.
 - **Janela Arrastável e Opacidade:** Janela flutuante redimensionável e arrastável pelo cabeçalho com 3 níveis de transparência (100%, 50%, translúcido).
 
 ### 2. 🔤 Controle de Fonte
@@ -165,7 +167,8 @@ mahoraga-accessibility-widget/
 │   │   ├── collector.ts       # Modo seletor de texto e seleção de página
 │   │   ├── speech.ts          # Síntese de voz (Web Speech API)
 │   │   ├── audio.ts           # Gerenciador de silenciamento de mídias
-│   │   └── styles.ts          # Injeção de CSS dinâmico e filtros SVG
+│   │   ├── styles.ts          # Injeção de CSS dinâmico e filtros SVG
+│   │   └── vlibras.ts         # Integração com motor oficial 3D e glosas do VLibras
 │   ├── addons/
 │   │   └── reading-tools.ts   # Régua de leitura, máscara e lupa de aumento
 │   ├── ui/
@@ -173,7 +176,6 @@ mahoraga-accessibility-widget/
 │   │   ├── translator-window.ts # Janela do Tradutor de Libras
 │   │   ├── addons-panel.ts    # Painel categorizado de recursos assistivos
 │   │   ├── dictionary-modal.ts# Modal do Dicionário de Libras
-│   │   ├── avatar-renderer.ts # Motor Canvas 2D/3D dos avatares Thiago e Marya
 │   │   └── icons.ts           # Ícones SVG acessíveis
 │   └── styles/
 │       └── widget.css         # Estilos isolados com animações

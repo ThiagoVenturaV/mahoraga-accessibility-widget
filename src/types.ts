@@ -70,8 +70,10 @@ export interface AccessibilityState {
   speed: SpeedRate;
   opacity: number;
   currentText: string;
+  currentGloss: string;
   subtitlesEnabled: boolean;
   isPlaying: boolean;
+  isVlibrasActive: boolean;
 
   // Font Control
   fontSizeLevel: number; // 0 (normal), 1 (+25%), 2 (+50%)

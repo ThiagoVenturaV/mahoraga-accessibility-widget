@@ -6,6 +6,7 @@ import { StyleManager } from './core/styles';
 import { CollectorManager } from './core/collector';
 import { SpeechManager } from './core/speech';
 import { AudioManager } from './core/audio';
+import { vlibrasManager } from './core/vlibras';
 import { ReadingToolsManager } from './addons/reading-tools';
 import { FloatingLauncher } from './ui/launcher';
 import { TranslatorWindow } from './ui/translator-window';
@@ -42,6 +43,7 @@ export class HandTalkWidget {
     this.speechManager = new SpeechManager();
     this.audioManager = new AudioManager();
     this.readingToolsManager = new ReadingToolsManager();
+    vlibrasManager.init();
 
     // Initialize UI components
     this.translatorWindow = new TranslatorWindow();
@@ -120,6 +122,7 @@ export class HandTalkWidget {
 
   public setAvatar(avatar: AvatarType) {
     store.setState({ avatar });
+    vlibrasManager.setAvatar(avatar);
   }
 
   public reset() {

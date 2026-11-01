@@ -1,12 +1,10 @@
 import { store } from '../state/store';
-import { AvatarRenderer } from './avatar-renderer';
 import { icons } from './icons';
 import { SpeedRate, AvatarType } from '../types';
+import { vlibrasManager } from '../core/vlibras';
 
 export class TranslatorWindow {
   private element: HTMLDivElement | null = null;
-  private renderer: AvatarRenderer | null = null;
-  private canvas: HTMLCanvasElement | null = null;
   private isMinimized = false;
   private isDragging = false;
   private dragStartX = 0;
@@ -20,16 +18,11 @@ export class TranslatorWindow {
     this.element = document.createElement('div');
     this.element.className = 'ht-widget-root ht-translator-window ht-skip';
     this.element.setAttribute('role', 'region');
-    this.element.setAttribute('aria-label', 'Janela do Tradutor de Libras');
+    this.element.setAttribute('aria-label', 'Janela de Tradução em Libras Mahoraga');
     this.element.style.display = 'none';
 
     this.render();
     document.body.appendChild(this.element);
-
-    this.canvas = this.element.querySelector<HTMLCanvasElement>('.ht-avatar-canvas');
-    if (this.canvas) {
-      this.renderer = new AvatarRenderer(this.canvas);
-    }
 
     this.attachEvents();
 
@@ -38,10 +31,24 @@ export class TranslatorWindow {
 
       this.element.style.display = state.isTranslatorOpen ? 'flex' : 'none';
 
+      if (state.isTranslatorOpen && !prev.isTranslatorOpen) {
+        vlibrasManager.openPlayer();
+      }
+
       // Update text in subtitle
       const subtitleEl = this.element.querySelector<HTMLDivElement>('.ht-translator-subtitle-text');
       if (subtitleEl) {
-        subtitleEl.innerText = state.currentText || 'Selecione ou clique em um texto para traduzir em Libras';
+        subtitleEl.innerText = state.currentText || 'Selecione ou clique em qualquer texto para traduzir em Libras';
+      }
+
+      const glossEl = this.element.querySelector<HTMLDivElement>('.ht-translator-subtitle-gloss');
+      if (glossEl) {
+        if (state.currentGloss) {
+          glossEl.innerText = `🧏 Glosa Libras: [${state.currentGloss}]`;
+          glossEl.style.display = 'block';
+        } else {
+          glossEl.style.display = 'none';
+        }
       }
 
       // Update opacity
@@ -50,14 +57,22 @@ export class TranslatorWindow {
         card.style.background = state.opacity === 100
           ? '#ffffff'
           : state.opacity === 50
-            ? 'rgba(255, 255, 255, 0.75)'
-            : 'rgba(255, 255, 255, 0.35)';
+            ? 'rgba(255, 255, 255, 0.82)'
+            : 'rgba(255, 255, 255, 0.45)';
       }
 
       // Update avatar switch button badge
       const avatarBadge = this.element.querySelector<HTMLElement>('.ht-avatar-name-badge');
+      const avatarSubtext = this.element.querySelector<HTMLElement>('.ht-avatar-status-name');
+      const isMarya = (state.avatar === 'MARYA');
+      const avatarName = isMarya ? 'Marya' : 'Thiago';
+      const vlibrasCode = isMarya ? 'Hosana' : 'Ícaro';
+
       if (avatarBadge) {
-        avatarBadge.innerText = (state.avatar === 'THIAGO' || state.avatar === 'HUGO') ? 'Thiago' : 'Marya';
+        avatarBadge.innerText = avatarName;
+      }
+      if (avatarSubtext) {
+        avatarSubtext.innerText = `Avatar 3D: ${avatarName} (${vlibrasCode})`;
       }
 
       // Update collector button active state
@@ -87,12 +102,14 @@ export class TranslatorWindow {
     });
   }
 
-  public translateText(text: string) {
-    if (!this.renderer) return;
+  public async translateText(text: string) {
+    if (!text || !text.trim()) return;
+
     store.setState({ isPlaying: true });
-    this.renderer.sign(text, () => {
-      store.setState({ isPlaying: false });
-    });
+
+    // 1. Send to real official VLibras 3D engine and fetch grammatical Libras gloss
+    const gloss = await vlibrasManager.translateAndPlay(text);
+    store.setState({ currentGloss: gloss, isPlaying: false });
   }
 
   private render() {
@@ -103,8 +120,7 @@ export class TranslatorWindow {
         position: fixed;
         bottom: 24px;
         right: 24px;
-        width: 320px;
-        height: 480px;
+        width: 340px;
         background: #ffffff;
         border-radius: 20px;
         box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -124,11 +140,11 @@ export class TranslatorWindow {
           justify-content: space-between;
           padding: 10px 14px;
           border-bottom: 1px solid rgba(0,0,0,0.06);
-          background: rgba(255,255,255,0.8);
+          background: rgba(255,255,255,0.85);
           cursor: grab;
           user-select: none;
         ">
-          <!-- Avatar Switcher -->
+          <!-- Avatar Switcher (Thiago <-> Marya) -->
           <button class="ht-btn-avatar-switch" style="
             display: flex;
             align-items: center;
@@ -142,9 +158,10 @@ export class TranslatorWindow {
             color: #0070f3;
             cursor: pointer;
             outline: none;
-          " title="Alternar entre Thiago e Marya">
+          " title="Alternar entre Thiago (Ícaro) e Marya (Hosana)">
             <span style="width: 14px; height: 14px; display: inline-block;">${icons.libras}</span>
             <span class="ht-avatar-name-badge">Thiago</span>
+            <span style="font-size: 0.7rem; color: #64748b;">⇄</span>
           </button>
 
           <!-- Window Controls -->
@@ -180,43 +197,98 @@ export class TranslatorWindow {
           </div>
         </div>
 
-        <!-- Canvas Body (Avatar) -->
-        <div class="ht-avatar-body" style="
-          flex: 1;
-          position: relative;
+        <!-- Body / Live 3D Motor Status & Subtitles -->
+        <div class="ht-translator-body" style="
+          padding: 16px;
           display: flex;
-          align-items: center;
-          justify-content: center;
-          overflow: hidden;
+          flex-direction: column;
+          gap: 12px;
         ">
-          <canvas class="ht-avatar-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
           
+          <!-- 3D Engine Card -->
+          <div style="
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border-radius: 14px;
+            padding: 14px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
+          ">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="display: inline-block; width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e;"></span>
+                <span style="font-size: 0.78rem; font-weight: 700; letter-spacing: 0.03em; color: #94a3b8; text-transform: uppercase;">VLibras 3D Engine</span>
+              </div>
+              <button class="ht-btn-focus-3d" style="
+                background: rgba(255,255,255,0.12);
+                border: 1px solid rgba(255,255,255,0.2);
+                color: #ffffff;
+                font-size: 0.72rem;
+                font-weight: 600;
+                padding: 3px 8px;
+                border-radius: 6px;
+                cursor: pointer;
+              ">Focar Avatar 3D</button>
+            </div>
+
+            <div class="ht-avatar-status-name" style="font-size: 0.95rem; font-weight: 700; color: #f8fafc;">
+              Avatar 3D: Thiago (Ícaro)
+            </div>
+
+            <p style="font-size: 0.75rem; color: #94a3b8; margin: 0; line-height: 1.4;">
+              Motor oficial open-source do Governo Federal e UFPB. Sinalização em Libras autêntica com expressões faciais e datilologia.
+            </p>
+          </div>
+
           <!-- Subtitle Box -->
           <div class="ht-translator-subtitle" style="
-            position: absolute;
-            bottom: 8px;
-            left: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.78);
-            backdrop-filter: blur(8px);
-            border-radius: 10px;
-            padding: 8px 12px;
-            color: #ffffff;
-            font-size: 0.82rem;
-            line-height: 1.35;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            pointer-events: none;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
           ">
-            <span class="ht-translator-subtitle-text">Clique em qualquer texto do site para traduzir em Libras</span>
+            <div style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">
+              Texto Selecionado:
+            </div>
+            <div class="ht-translator-subtitle-text" style="
+              font-size: 0.85rem;
+              color: #0f172a;
+              font-weight: 500;
+              line-height: 1.4;
+              max-height: 80px;
+              overflow-y: auto;
+            ">
+              Clique em qualquer texto do site para traduzir em Libras
+            </div>
+            
+            <!-- Libras Grammatical Gloss -->
+            <div class="ht-translator-subtitle-gloss" style="
+              display: none;
+              font-size: 0.75rem;
+              color: #0284c7;
+              font-weight: 700;
+              background: #f0f9ff;
+              border: 1px dashed #bae6fd;
+              border-radius: 6px;
+              padding: 6px 8px;
+              line-height: 1.35;
+              text-transform: uppercase;
+              word-break: break-word;
+            "></div>
           </div>
+
         </div>
 
         <!-- Toolbar / Controls -->
         <div class="ht-translator-toolbar" style="
           padding: 8px 12px;
           border-top: 1px solid rgba(0,0,0,0.06);
-          background: rgba(255,255,255,0.9);
+          background: rgba(255,255,255,0.92);
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -254,7 +326,7 @@ export class TranslatorWindow {
             font-size: 0.8rem;
             font-weight: 600;
             cursor: pointer;
-          " title="Alterar velocidade de sinalização">
+          " title="Alterar velocidade da sinalização">
             <span style="width: 14px; height: 14px; display: inline-block;">${icons.speed}</span>
             <span>1x</span>
           </button>
@@ -321,12 +393,20 @@ export class TranslatorWindow {
       const current = store.getState().avatar;
       const next: AvatarType = (current === 'THIAGO' || current === 'HUGO') ? 'MARYA' : 'THIAGO';
       store.setState({ avatar: next });
+      vlibrasManager.setAvatar(next);
+    });
+
+    // Focus 3D VLibras Player
+    const focus3dBtn = this.element.querySelector('.ht-btn-focus-3d');
+    focus3dBtn?.addEventListener('click', () => {
+      vlibrasManager.openPlayer();
     });
 
     // Close window
     const closeBtn = this.element.querySelector('.ht-btn-close');
     closeBtn?.addEventListener('click', () => {
       store.setState({ isTranslatorOpen: false, isCollectorActive: false });
+      vlibrasManager.closePlayer();
     });
 
     // Minimize window
@@ -348,7 +428,11 @@ export class TranslatorWindow {
       const speeds: SpeedRate[] = [1, 1.5, 2, 0.5];
       const current = store.getState().speed;
       const nextIdx = (speeds.indexOf(current) + 1) % speeds.length;
-      store.setState({ speed: speeds[nextIdx] });
+      const nextSpeed = speeds[nextIdx];
+      store.setState({ speed: nextSpeed });
+      if (window.plugin?.player?.setSpeed) {
+        window.plugin.player.setSpeed(nextSpeed);
+      }
     });
 
     // Repeat translation
@@ -384,20 +468,16 @@ export class TranslatorWindow {
 
   private toggleMinimize() {
     this.isMinimized = !this.isMinimized;
-    const card = this.element?.querySelector<HTMLElement>('.ht-translator-card');
-    const body = this.element?.querySelector<HTMLElement>('.ht-avatar-body');
+    const body = this.element?.querySelector<HTMLElement>('.ht-translator-body');
     const toolbar = this.element?.querySelector<HTMLElement>('.ht-translator-toolbar');
 
-    if (card && body && toolbar) {
+    if (body && toolbar) {
       if (this.isMinimized) {
-        card.style.height = '48px';
         body.style.display = 'none';
         toolbar.style.display = 'none';
       } else {
-        card.style.height = '480px';
         body.style.display = 'flex';
         toolbar.style.display = 'flex';
-        this.renderer?.resize();
       }
     }
   }
@@ -424,7 +504,6 @@ export class TranslatorWindow {
     const x = e.clientX - this.dragStartX;
     const y = e.clientY - this.dragStartY;
 
-    // Bounds check
     const maxX = window.innerWidth - card.offsetWidth - 10;
     const maxY = window.innerHeight - card.offsetHeight - 10;
     const clampedX = Math.max(10, Math.min(maxX, x));
@@ -447,7 +526,6 @@ export class TranslatorWindow {
   }
 
   public destroy() {
-    this.renderer?.destroy();
     this.element?.remove();
   }
 }

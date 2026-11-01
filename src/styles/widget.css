@@ -104,3 +104,9 @@
 .ht-dict-list::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+/* VLibras Widget integration: hide duplicate floating button so Mahoraga Launcher is the unified trigger */
+#vlibras-access-wrapper {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

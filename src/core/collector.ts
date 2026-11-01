@@ -45,6 +45,8 @@ export class CollectorManager {
       el.closest('.ht-widget-root') ||
       el.closest('.ht-skip') ||
       el.closest('.ht-ignore') ||
+      el.closest('#vlibras-app-root') ||
+      el.closest('#vlibras-access-wrapper') ||
       el.tagName === 'BODY' ||
       el.tagName === 'HTML'
     );

@@ -60,8 +60,10 @@ export const defaultState: AccessibilityState = {
   speed: 1,
   opacity: 100,
   currentText: 'Olá! Clique em qualquer texto da página ou selecione uma frase para traduzir em Libras.',
+  currentGloss: 'OLÁ BEM_VINDO LIBRAS',
   subtitlesEnabled: true,
   isPlaying: false,
+  isVlibrasActive: true,
 
   fontSizeLevel: 0,
   dyslexicFont: false,
