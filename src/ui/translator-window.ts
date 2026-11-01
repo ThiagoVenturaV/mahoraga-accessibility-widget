@@ -94,22 +94,12 @@ export class TranslatorWindow {
       if (speedBtn) {
         speedBtn.innerText = `${state.speed}x`;
       }
-
-      // Trigger sign translation if text changed
-      if (state.currentText !== prev.currentText && state.isTranslatorOpen) {
-        this.translateText(state.currentText);
-      }
     });
   }
 
   public async translateText(text: string) {
     if (!text || !text.trim()) return;
-
-    store.setState({ isPlaying: true });
-
-    // 1. Send to real official VLibras 3D engine and fetch grammatical Libras gloss
-    const gloss = await vlibrasManager.translateAndPlay(text);
-    store.setState({ currentGloss: gloss, isPlaying: false });
+    await vlibrasManager.translateAndPlay(text);
   }
 
   private render() {

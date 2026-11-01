@@ -1,8 +1,7 @@
 import { store } from '../state/store';
 
 export class CollectorManager {
-  private overlay: HTMLDivElement | null = null;
-  private currentElement: HTMLElement | null = null;
+  private currentHoverEl: HTMLElement | null = null;
   private isActive = false;
   private onSelectTextCallback: (text: string) => void;
 
@@ -12,29 +11,18 @@ export class CollectorManager {
   }
 
   private init() {
-    this.overlay = document.createElement('div');
-    this.overlay.className = 'ht-collector-highlight ht-skip';
-    this.overlay.style.cssText = `
-      position: absolute;
-      pointer-events: none;
-      border: 3px dashed #0084ff;
-      background: rgba(0, 132, 255, 0.15);
-      border-radius: 4px;
-      z-index: 2147483640;
-      transition: all 0.12s ease;
-      display: none;
-    `;
-    document.body.appendChild(this.overlay);
-
-    document.addEventListener('mousemove', this.handleMouseMove.bind(this), { passive: true });
+    document.addEventListener('mouseover', this.handleMouseOver.bind(this), { passive: true });
+    document.addEventListener('mouseout', this.handleMouseOut.bind(this), { passive: true });
     document.addEventListener('click', this.handleClick.bind(this), true);
     document.addEventListener('mouseup', this.handleTextSelection.bind(this));
 
     store.subscribe((state) => {
       this.isActive = state.isCollectorActive;
-      if (!this.isActive && this.overlay) {
-        this.overlay.style.display = 'none';
-        this.currentElement = null;
+      if (this.isActive) {
+        document.body.classList.add('ht-collector-mode');
+      } else {
+        document.body.classList.remove('ht-collector-mode');
+        this.clearHover();
       }
     });
   }
@@ -52,64 +40,130 @@ export class CollectorManager {
     );
   }
 
-  private handleMouseMove(e: MouseEvent) {
-    if (!this.isActive || !this.overlay) return;
+  private clearHover() {
+    if (this.currentHoverEl) {
+      this.currentHoverEl.classList.remove('vlibras--hover');
+      this.currentHoverEl = null;
+    }
+    document.querySelectorAll('.vlibras--hover').forEach((el) => {
+      el.classList.remove('vlibras--hover');
+    });
+  }
 
-    const target = document.elementFromPoint(e.clientX, e.clientY) as HTMLElement | null;
-    if (!target || this.isIgnored(target)) {
-      this.overlay.style.display = 'none';
-      this.currentElement = null;
-      return;
+  private handleMouseOver(e: MouseEvent) {
+    if (!this.isActive) return;
+    const target = e.target as HTMLElement | null;
+    if (!target || this.isIgnored(target)) return;
+
+    if (this.currentHoverEl && this.currentHoverEl !== target) {
+      this.currentHoverEl.classList.remove('vlibras--hover');
     }
 
-    const text = (target.innerText || target.textContent || '').trim();
-    if (!text) {
-      this.overlay.style.display = 'none';
-      return;
+    target.classList.add('vlibras--hover');
+    this.currentHoverEl = target;
+  }
+
+  private handleMouseOut(e: MouseEvent) {
+    if (!this.isActive) return;
+    const target = e.target as HTMLElement | null;
+    if (target) {
+      target.classList.remove('vlibras--hover');
+      if (this.currentHoverEl === target) {
+        this.currentHoverEl = null;
+      }
     }
+  }
 
-    this.currentElement = target;
-    const rect = target.getBoundingClientRect();
-    const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
-    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-
-    this.overlay.style.display = 'block';
-    this.overlay.style.top = `${rect.top + scrollY - 2}px`;
-    this.overlay.style.left = `${rect.left + scrollX - 2}px`;
-    this.overlay.style.width = `${rect.width + 4}px`;
-    this.overlay.style.height = `${rect.height + 4}px`;
+  /**
+   * Native VLibras text extraction algorithm
+   */
+  private extractTextFromElement(el: HTMLElement): string {
+    // 1. Explicit data-vlibras-gloss attribute
+    if (el.dataset.vlibrasGloss?.trim()) {
+      return el.dataset.vlibrasGloss.trim();
+    }
+    // 2. Images: alt text
+    if (el.tagName === 'IMG') {
+      return (el as HTMLImageElement).alt?.trim() || '';
+    }
+    // 3. Form input/buttons: value or text
+    if (el.tagName === 'INPUT') {
+      return (el as HTMLInputElement).value?.trim() || '';
+    }
+    if (el.tagName === 'BUTTON') {
+      return (el as HTMLButtonElement).value?.trim() || el.innerText?.trim() || '';
+    }
+    // 4. Select options
+    if (el.tagName === 'SELECT') {
+      return (el as HTMLSelectElement).selectedOptions[0]?.innerText?.trim() || '';
+    }
+    // 5. General text content
+    return (el.innerText || el.textContent || '').trim();
   }
 
   private handleClick(e: MouseEvent) {
-    if (!this.isActive || !this.currentElement) return;
+    const target = e.target as HTMLElement | null;
+    if (!target) return;
 
-    e.preventDefault();
-    e.stopPropagation();
+    // Never intercept clicks inside Mahoraga widget or VLibras player
+    if (this.isIgnored(target)) {
+      return;
+    }
 
-    const text = (this.currentElement.innerText || this.currentElement.textContent || '').trim();
-    if (text) {
-      this.onSelectTextCallback(text);
+    // Check if there is an active text selection first
+    const selection = window.getSelection();
+    const selectionText = selection ? selection.toString().trim() : '';
+
+    if (selectionText && selectionText.length > 0 && selectionText.length <= 1000) {
+      e.preventDefault();
+      e.stopPropagation();
+      this.clearHover();
       store.setState({ isCollectorActive: false });
+      this.onSelectTextCallback(selectionText);
+      return;
+    }
+
+    // If Collector Mode is active, capture the clicked element natively
+    if (this.isActive) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const text = this.extractTextFromElement(target);
+      if (text) {
+        target.classList.add('vlibras--active');
+        setTimeout(() => target.classList.remove('vlibras--active'), 1000);
+
+        this.clearHover();
+        store.setState({ isCollectorActive: false });
+        this.onSelectTextCallback(text);
+      }
     }
   }
 
-  private handleTextSelection() {
+  /**
+   * Handles user dragging mouse to select any text on the page
+   */
+  private handleTextSelection(e: MouseEvent) {
+    const target = e.target as HTMLElement | null;
+    if (target && this.isIgnored(target)) {
+      return;
+    }
+
     const selection = window.getSelection();
     if (!selection || selection.isCollapsed) return;
 
     const selectedText = selection.toString().trim();
     if (selectedText.length > 1 && selectedText.length <= 1000) {
-      // If user selected text while translator is open, send it directly
-      const state = store.getState();
-      if (state.isTranslatorOpen) {
-        this.onSelectTextCallback(selectedText);
-      }
+      // Trigger translation immediately
+      this.onSelectTextCallback(selectedText);
     }
   }
 
   public destroy() {
-    this.overlay?.remove();
-    document.removeEventListener('mousemove', this.handleMouseMove.bind(this));
+    this.clearHover();
+    document.body.classList.remove('ht-collector-mode');
+    document.removeEventListener('mouseover', this.handleMouseOver.bind(this));
+    document.removeEventListener('mouseout', this.handleMouseOut.bind(this));
     document.removeEventListener('click', this.handleClick.bind(this), true);
     document.removeEventListener('mouseup', this.handleTextSelection.bind(this));
   }

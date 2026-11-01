@@ -120,7 +120,6 @@ export class HandTalkWidget {
   }
 
   public translate(text: string) {
-    store.setState({ isTranslatorOpen: true, currentText: text });
     this.translatorWindow.translateText(text);
   }
 

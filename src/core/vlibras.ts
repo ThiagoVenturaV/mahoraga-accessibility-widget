@@ -68,6 +68,7 @@ export class VLibrasManager {
       }
 
       this.setupRootWatcher();
+      this.hookNativeTranslation();
 
       // Sync avatar changes from Mahoraga store to VLibras
       store.subscribe((state) => {
@@ -81,6 +82,46 @@ export class VLibrasManager {
     } finally {
       this.isInitializing = false;
     }
+  }
+
+  private hookNativeTranslation() {
+    let isHooked = false;
+    const attachHook = () => {
+      if (window.plugin && !('__mahoragaHooked' in window.plugin)) {
+        (window.plugin as any).__mahoragaHooked = true;
+        const origPluginTranslate = window.plugin.translate;
+        if (typeof origPluginTranslate === 'function') {
+          window.plugin.translate = async (text: string) => {
+            store.setState({ currentText: text, isPlaying: true, isTranslatorOpen: true });
+            const gloss = await this.translateTextToGloss(text);
+            store.setState({ currentGloss: gloss, isPlaying: false });
+            return origPluginTranslate(text);
+          };
+          isHooked = true;
+        }
+      }
+
+      if (window.vlibras && !('__mahoragaHooked' in window.vlibras)) {
+        (window.vlibras as any).__mahoragaHooked = true;
+        const origVlibrasTranslate = window.vlibras.translateAndPlay;
+        if (typeof origVlibrasTranslate === 'function') {
+          window.vlibras.translateAndPlay = async (text: string) => {
+            store.setState({ currentText: text, isPlaying: true, isTranslatorOpen: true });
+            const gloss = await this.translateTextToGloss(text);
+            store.setState({ currentGloss: gloss, isPlaying: false });
+            return origVlibrasTranslate(text);
+          };
+          isHooked = true;
+        }
+      }
+    };
+
+    attachHook();
+    const interval = setInterval(() => {
+      attachHook();
+      if (isHooked) clearInterval(interval);
+    }, 400);
+    setTimeout(() => clearInterval(interval), 15000);
   }
 
   private setupRootWatcher() {
@@ -240,18 +281,23 @@ export class VLibrasManager {
    * Sends text to the official VLibras 3D engine for authentic Libras signing
    */
   public async translateAndPlay(text: string): Promise<string> {
+    if (!text || !text.trim()) return '';
+
     this.openPlayer();
+
+    store.setState({ currentText: text, isPlaying: true, isTranslatorOpen: true });
 
     // 1. Fetch authentic grammatical glosses
     const gloss = await this.translateTextToGloss(text);
+    store.setState({ currentGloss: gloss });
 
     // 2. Play via VLibras 3D runtime with retry loop while engine initialises
     const play = () => {
-      if (window.plugin?.translate) {
+      if (typeof window.plugin?.translate === 'function') {
         window.plugin.translate(text);
         return true;
       }
-      if (window.vlibras?.translateAndPlay) {
+      if (typeof window.vlibras?.translateAndPlay === 'function') {
         window.vlibras.translateAndPlay(text);
         return true;
       }
@@ -264,8 +310,11 @@ export class VLibrasManager {
         attempts++;
         if (play() || attempts > 25) {
           clearInterval(interval);
+          store.setState({ isPlaying: false });
         }
       }, 250);
+    } else {
+      setTimeout(() => store.setState({ isPlaying: false }), 400);
     }
 
     return gloss;
